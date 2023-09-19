@@ -8,7 +8,22 @@ const sacramento = Sacramento({
   subsets: ["latin"],
 });
 
-export default function Products() {
+export default async function Products() {
+  const [responseCategories, responseGenders, responseSizes, responseColors] =
+    await Promise.all([
+      fetch("http://localhost:3001/product/category"),
+      fetch("http://localhost:3001/product/gender"),
+      fetch("http://localhost:3001/product/size"),
+      fetch("http://localhost:3001/product/color"),
+    ]);
+
+  const filters: Filters = {
+    categories: await responseCategories.json(),
+    genders: await responseGenders.json(),
+    sizes: await responseSizes.json(),
+    colors: await responseColors.json(),
+  };
+
   return (
     <div>
       <div
@@ -21,95 +36,49 @@ export default function Products() {
           <div>
             <b>CATEGORIA</b>
             <ul className="flex flex-col gap-1 mt-2">
-              <li className="flex gap-2 items-center">
-                <Checkbox />
-                Roupas
-              </li>
-              <li className="flex gap-2 items-center">
-                <Checkbox />
-                Bolsas
-              </li>
-              <li className="flex gap-2 items-center">
-                <Checkbox />
-                Brinquedos
-              </li>
-              <li className="flex gap-2 items-center">
-                <Checkbox />
-                Acessórios
-              </li>
+              {filters.categories.map((i) => (
+                <li className="flex gap-2 items-center" key={i.id}>
+                  <Checkbox />
+                  {i.name}
+                </li>
+              ))}
             </ul>
           </div>
           <div>
             <b>GÊNERO</b>
             <ul className="flex flex-col gap-1 mt-2">
-              <li className="flex gap-2 items-center">
-                <Checkbox />
-                Feminino
-              </li>
-              <li className="flex gap-2 items-center">
-                <Checkbox />
-                Masculino
-              </li>
+              {filters.genders.map((i) => (
+                <li className="flex gap-2 items-center" key={i.id}>
+                  <Checkbox />
+                  {i.name}
+                </li>
+              ))}
             </ul>
           </div>
           <div>
             <b>TAMANHO</b>
             <ul className="flex flex-col gap-1 mt-2">
-              <li className="flex gap-2 items-center">
-                <Checkbox />1 ano
-              </li>
-              <li className="flex gap-2 items-center">
-                <Checkbox />2 anos
-              </li>
-              <li className="flex gap-2 items-center">
-                <Checkbox />3 anos
-              </li>
-              <li className="flex gap-2 items-center">
-                <Checkbox />G
-              </li>
-              <li className="flex gap-2 items-center">
-                <Checkbox />M
-              </li>
-              <li className="flex gap-2 items-center">
-                <Checkbox />P
-              </li>
-              <li className="flex gap-2 items-center">
-                <Checkbox />
-                PP
-              </li>
-              <li className="flex gap-2 items-center">
-                <Checkbox />
-                Prematuro
-              </li>
+              {filters.sizes.map((i) => (
+                <li className="flex gap-2 items-center" key={i.id}>
+                  <Checkbox />
+                  {i.name}
+                </li>
+              ))}
             </ul>
           </div>
           <div>
             <b>CORES</b>
             <ul>
-              <li className="flex gap-2 items-center">
-                <Checkbox />
-                Amarelo
-              </li>
-              <li className="flex gap-2 items-center">
-                <Checkbox />
-                Azul
-              </li>
-              <li className="flex gap-2 items-center">
-                <Checkbox />
-                Bege
-              </li>
-              <li className="flex gap-2 items-center">
-                <Checkbox />
-                Branco
-              </li>
-              <li className="flex gap-2 items-center">
-                <Checkbox />
-                Verde
-              </li>
-              <li className="flex gap-2 items-center">
-                <Checkbox />
-                Rosa
-              </li>
+              {filters.colors.map((i) => (
+                <li className="flex gap-2 items-center" key={i.id}>
+                  <Checkbox />
+                  <div
+                    className="w-4 h-4 rounded-full"
+                    style={{ background: i.code }}
+                  />
+                  {i.name}
+                </li>
+              ))}
             </ul>
           </div>
         </aside>
@@ -128,4 +97,32 @@ export default function Products() {
       </div>
     </div>
   );
+}
+
+interface Filters {
+  categories: {
+    id: string;
+    name: string;
+    createdAt: string;
+    updatedAt: string;
+  }[];
+  genders: {
+    id: string;
+    name: string;
+    createdAt: string;
+    updatedAt: string;
+  }[];
+  sizes: {
+    id: string;
+    name: string;
+    createdAt: string;
+    updatedAt: string;
+  }[];
+  colors: {
+    id: string;
+    name: string;
+    code: string;
+    createdAt: string;
+    updatedAt: string;
+  }[];
 }
