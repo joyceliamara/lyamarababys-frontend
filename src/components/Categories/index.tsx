@@ -8,7 +8,7 @@ import Button from "../Button";
 export default function Categories() {
   return (
     <div>
-      <div className="flex justify-center gap-10 mt-10">
+      <div className="flex justify-center gap-10 mt-10 flex-wrap">
         <div>
           <Image src={acessories} alt="" />
           <p className="mt-2 text-center">Acessórios</p>
