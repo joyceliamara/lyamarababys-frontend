@@ -5,10 +5,10 @@ import { ShoppingBag, Heart, ChevronDown, Menu } from "lucide-react";
 
 export default function Header() {
   return (
-    <header className="flex justify-between items-center px-12 py-8">
-      <div className="flex gap-4">
-        <Image src={logo} alt="" />
-        <Image src={anchor} alt="" />
+    <header className="flex justify-between items-center px-6 lg:px-12 py-8">
+      <div className="flex gap-1 lg:gap-2">
+        <Image className="inline w-[80%] lg:w-[100%]" src={logo} alt="" />
+        <Image className="inline w-4 ml-2" src={anchor} alt="" />
       </div>
       <nav className="h-fit">
         {/* desktop */}

@@ -10,6 +10,7 @@ export default function Home() {
       <Header />
       <Banner />
       <Categories />
+      {/* @ts-expect-error Server Component */}
       <Products />
       <Footer />
     </div>

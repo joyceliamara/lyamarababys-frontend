@@ -9,7 +9,7 @@ export default function Footer() {
   return (
     <div className="px-20 py-20 bg-[#F5F5F5]">
       <Image src={logo} alt="" />
-      <div className="flex gap-16 mt-16">
+      <div className="flex gap-16 mt-16 flex-wrap">
         <div className="flex-1 flex flex-col gap-2 text-[#B0B0B0]">
           <b className="text-black">Políticas da Empresa</b>
           <a>Acompanhar pedido</a>
@@ -28,18 +28,18 @@ export default function Footer() {
         </div>
         <div className="flex-1">
           <b>Siga a Lyamara´s Baby</b>
-          <ul className="flex gap-6 mt-6">
-            <li>
-              <Image src={facebook} alt="" />
+          <ul className="flex gap-4 mt-6 flex-wrap">
+            <li className="w-fit">
+              <Image src={facebook} className="w-10" alt="" />
             </li>
-            <li>
-              <Image src={instagram} alt="" />
+            <li className="w-fit">
+              <Image src={instagram} className="w-10" alt="" />
             </li>
-            <li>
-              <Image src={whatshapp} alt="" />
+            <li className="w-fit">
+              <Image src={whatshapp} className="w-10" alt="" />
             </li>
-            <li>
-              <Image src={tiktok} alt="" />
+            <li className="w-fit">
+              <Image src={tiktok} className="w-10" alt="" />
             </li>
           </ul>
         </div>

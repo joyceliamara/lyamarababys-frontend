@@ -32,7 +32,7 @@ export default async function Products() {
         Produtos
       </div>
       <div className="flex gap-4 p-20">
-        <aside className="flex flex-col gap-7 w-[250px]">
+        <aside className="hidden lg:flex flex-col gap-7 w-[250px]">
           <div>
             <b>CATEGORIA</b>
             <ul className="flex flex-col gap-1 mt-2">
@@ -82,7 +82,7 @@ export default async function Products() {
             </ul>
           </div>
         </aside>
-        <main className="flex-1 grid grid-cols-3 gap-16 ">
+        <main className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16">
           {products.map((item, index) => (
             <ProductCard
               key={index}
