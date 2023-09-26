@@ -1,9 +1,10 @@
-import { ReactNode } from "react";
+import { ReactNode, MouseEventHandler } from "react";
 
 export default function Button({
   children,
   variant,
   rounded,
+  onClick,
   ...props
 }: ButtonProps) {
   let className = "";
@@ -45,6 +46,7 @@ export default function Button({
       style={{
         borderRadius: getRounded(),
       }}
+      onClick={onClick}
     >
       {children}
     </a>
@@ -56,4 +58,5 @@ interface ButtonProps {
   variant?: "default" | "primary" | "secondary" | "terciary";
   rounded?: "sm" | "md" | "lg";
   className?: string;
+  onClick?: MouseEventHandler<HTMLAnchorElement> | undefined;
 }

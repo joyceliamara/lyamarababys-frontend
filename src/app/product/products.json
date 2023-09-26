@@ -4,7 +4,14 @@
     "subtitle": "Bolsa com detalhes em bordado rosa",
     "price": 179.9,
     "priceWithDiscount": 159.9,
-    "image": "/images/bolsa-bordada.png"
+    "image": "/images/bolsa-bordada.png",
+    "album": [
+      "/images/conj01.png",
+      "/images/conj02.png",
+      "/images/conj03.png",
+      "/images/conj04.png",
+      "/images/conj05.png"
+    ]
   },
   {
     "title": "Bolsa Bordada",

@@ -6,13 +6,16 @@ import ProductCard from "@/components/ProductCard";
 import formatCurrency from "@/utils/format-currency";
 import Button from "@/components/Button";
 import { Heart } from "lucide-react";
+import Carousel from "@/components/Carousel";
 
 export default function ProductPage() {
   return (
     <div>
       <Header />
       <div className="flex gap-6 max-w-5xl mx-auto my-8">
-        <div className="w-24 bg-slate-500">Carousel</div>
+        <div className="w-32">
+          <Carousel galery={products[0].album as string[]} />
+        </div>
         <div className="flex-1">
           <img src={products[0].image} className="w-full" alt="" />
         </div>
