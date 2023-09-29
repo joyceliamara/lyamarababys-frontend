@@ -1,3 +1,5 @@
+"use client";
+
 /* eslint-disable @next/next/no-img-element */
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
@@ -7,20 +9,24 @@ import formatCurrency from "@/utils/format-currency";
 import Button from "@/components/Button";
 import { Heart } from "lucide-react";
 import Carousel from "@/components/Carousel";
+import { CarouselContext, CarouselProvider } from "@/contexts/CarouselContext";
+import { useContext } from "react";
 
 export default function ProductPage() {
   return (
     <div>
       <Header />
       <div className="flex gap-6 max-w-5xl mx-auto my-8">
-        <div className="w-32">
-          <Carousel galery={products[0].album as string[]} />
-        </div>
-        <div className="flex-1">
-          <img src={products[0].image} className="w-full" alt="" />
-        </div>
+        <CarouselProvider>
+          <div className="w-32">
+            <Carousel galery={products[0].album as string[]} />
+          </div>
+          <div className="flex-1">
+            <FocusedImage />
+          </div>
+        </CarouselProvider>
         <div className="w-80 flex flex-col justify-between">
-          <b className="text-3xl font-medium">{products[0].subtitle}</b>
+          <b className="text-3xl font-medium">{products[0].description}</b>
 
           <div className="flex flex-col">
             {!!products[0].priceWithDiscount ? (
@@ -74,19 +80,44 @@ export default function ProductPage() {
         </div>
       </div>
 
-      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 max-w-4xl m-auto">
-        {products.map((item, index) => (
-          <ProductCard
-            key={index}
-            image={item.image}
-            title={item.title}
-            subtitle={item.subtitle}
-            price={item.price}
-            priceWithDiscount={item.priceWithDiscount}
-          />
-        ))}
+      <div className="max-w-4xl mx-auto my-16">
+        <h1 className="text-center font-bold text-3xl">Detalhes do produto</h1>
+        <p className="mt-8">
+          <b className="text-[#7C969D]">Descrição</b>
+        </p>
+        <p>{products[0].description}</p>
+        <p className="mt-3">
+          <b className="text-[#7C969D]">Composição</b>
+        </p>
+        <p>{products[0].composition}</p>
+        <p className="mt-3">
+          <b className="text-[#7C969D]">Cor</b>
+        </p>
+        <p>Vermelha</p>
       </div>
+      <div className="mb-8">
+        <h1 className="text-center font-bold text-3xl mb-8">Do mesmo estilo</h1>
+        <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 max-w-4xl m-auto">
+          {products.map((item, index) => (
+            <ProductCard
+              key={index}
+              image={item.image}
+              title={item.title}
+              subtitle={item.subtitle as string}
+              price={item.price}
+              priceWithDiscount={item.priceWithDiscount}
+            />
+          ))}
+        </div>
+      </div>
+
       <Footer />
     </div>
   );
+}
+
+function FocusedImage() {
+  const { focusedImage } = useContext(CarouselContext);
+
+  return <img src={focusedImage} className="w-full select-none" alt="" />;
 }

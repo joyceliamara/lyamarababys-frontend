@@ -1,10 +1,14 @@
 "use client";
 
 /* eslint-disable @next/next/no-img-element */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Button from "../Button";
+import { CarouselContext } from "@/contexts/CarouselContext";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 export default function Carousel({ galery }: CarouselProps) {
+  const { changeFocusedImage } = useContext(CarouselContext);
+
   const limit = 3;
   const initialTake = 0;
 
@@ -20,7 +24,13 @@ export default function Carousel({ galery }: CarouselProps) {
       concatImage = galery.slice(0, take + limit - galery.length);
     }
 
-    setSortedImages(galery.slice(take, take + limit).concat(concatImage));
+    const newSortedImages = galery
+      .slice(take, take + limit)
+      .concat(concatImage);
+
+    setSortedImages(newSortedImages);
+
+    changeFocusedImage(newSortedImages[1]);
   }, [take]);
 
   function next() {
@@ -32,15 +42,15 @@ export default function Carousel({ galery }: CarouselProps) {
   }
 
   return (
-    <div className="flex flex-col justify-between h-full">
+    <div className="flex flex-col justify-between h-full select-none">
       <Button onClick={previous} className="w-full" rounded="lg">
-        Inicio
+        <ChevronUp />
       </Button>
       {sortedImages.map((item, index) => (
         <img src={item} alt="" key={index} className="rounded-lg" />
       ))}
       <Button onClick={next} className="w-full" rounded="lg">
-        Fim
+        <ChevronDown />
       </Button>
     </div>
   );
