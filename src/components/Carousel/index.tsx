@@ -42,7 +42,7 @@ export default function Carousel({ galery }: CarouselProps) {
   }
 
   return (
-    <div className="flex flex-col justify-between h-full select-none">
+    <div className="flex flex-col gap-4 justify-between h-full select-none">
       <Button onClick={previous} className="w-full" rounded="lg">
         <ChevronUp />
       </Button>

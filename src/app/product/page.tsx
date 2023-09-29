@@ -16,16 +16,18 @@ export default function ProductPage() {
   return (
     <div>
       <Header />
-      <div className="flex gap-6 max-w-5xl mx-auto my-8">
-        <CarouselProvider>
-          <div className="w-32">
-            <Carousel galery={products[0].album as string[]} />
-          </div>
-          <div className="flex-1">
-            <FocusedImage />
-          </div>
-        </CarouselProvider>
-        <div className="w-80 flex flex-col justify-between">
+      <div className="flex gap-6 max-w-5xl mx-auto my-8 max-lg:flex-col max-lg:max-w-xl max-sm:mx-4">
+        <div className="flex flex-1  gap-6">
+          <CarouselProvider>
+            <div className="w-32 max-lg:w-24 max-sm:w-12">
+              <Carousel galery={products[0].album as string[]} />
+            </div>
+            <div className="flex-1 ">
+              <FocusedImage />
+            </div>
+          </CarouselProvider>
+        </div>
+        <div className="w-80 max-lg:w-full flex flex-col justify-between">
           <b className="text-3xl font-medium">{products[0].description}</b>
 
           <div className="flex flex-col">
@@ -80,7 +82,7 @@ export default function ProductPage() {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto my-16">
+      <div className="max-w-4xl mx-auto my-16 max-sm:mx-4 max-lg:mx-12">
         <h1 className="text-center font-bold text-3xl">Detalhes do produto</h1>
         <p className="mt-8">
           <b className="text-[#7C969D]">Descrição</b>
@@ -95,9 +97,9 @@ export default function ProductPage() {
         </p>
         <p>Vermelha</p>
       </div>
-      <div className="mb-8">
+      <div className="mb-8 mx-4">
         <h1 className="text-center font-bold text-3xl mb-8">Do mesmo estilo</h1>
-        <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 max-w-4xl m-auto">
+        <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 max-w-4xl m-auto w-fit">
           {products.map((item, index) => (
             <ProductCard
               key={index}
