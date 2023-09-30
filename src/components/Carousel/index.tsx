@@ -43,13 +43,13 @@ export default function Carousel({ galery }: CarouselProps) {
 
   return (
     <div className="flex flex-col gap-4 justify-between h-full select-none">
-      <Button onClick={previous} className="w-full" rounded="lg">
+      <Button onClick={previous} className="w-full max-sm:p-0" rounded="lg">
         <ChevronUp />
       </Button>
       {sortedImages.map((item, index) => (
         <img src={item} alt="" key={index} className="rounded-lg" />
       ))}
-      <Button onClick={next} className="w-full" rounded="lg">
+      <Button onClick={next} className="w-full max-sm:p-0" rounded="lg">
         <ChevronDown />
       </Button>
     </div>
