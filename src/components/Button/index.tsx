@@ -5,6 +5,7 @@ export default function Button({
   variant,
   rounded,
   onClick,
+  size = "md",
   ...props
 }: ButtonProps) {
   let className = "";
@@ -22,8 +23,21 @@ export default function Button({
       className = "bg-[#7C969D] text-white";
       break;
 
+    case "mono":
+      className = "bg-white text-black";
+      break;
+
     default:
       className = "bg-[#E3E3E3] text-[#515151]";
+      break;
+  }
+
+  switch (size) {
+    case "md":
+      className = className + " py-2 px-6";
+      break;
+    case "sm":
+      className = className + " py-1 px-2";
       break;
   }
 
@@ -42,7 +56,7 @@ export default function Button({
 
   return (
     <a
-      className={`flex justify-center items-center py-2 px-6 w-fit cursor-pointer ${className} ${props.className}`}
+      className={`flex justify-center items-center w-fit cursor-pointer ${className} ${props.className}`}
       style={{
         borderRadius: getRounded(),
       }}
@@ -55,8 +69,9 @@ export default function Button({
 
 interface ButtonProps {
   children?: ReactNode;
-  variant?: "default" | "primary" | "secondary" | "terciary";
+  variant?: "default" | "primary" | "secondary" | "terciary" | "mono";
   rounded?: "sm" | "md" | "lg";
+  size?: "sm" | "md";
   className?: string;
   onClick?: MouseEventHandler<HTMLAnchorElement> | undefined;
 }
