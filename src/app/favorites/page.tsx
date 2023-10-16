@@ -23,26 +23,26 @@ export default function Favorites() {
           5 Itens
         </Button>
       </div>
-      <div className="flex p-6 justify-between bg-[#F1F1F1]">
-        <div className="flex gap-4">
-          <Select name="" id="" rounded="sm">
+      <div className="flex p-6 justify-between bg-[#F1F1F1] max-md:flex-col">
+        <div className="flex gap-4 max-md:justify-center">
+          <Select name="" id="" rounded="sm" className="max-sm:text-xs">
             <option value="">Categoria</option>
           </Select>
-          <Select name="" id="" rounded="sm">
+          <Select name="" id="" rounded="sm" className="max-sm:text-xs">
             <option value="">Status</option>
           </Select>
-          <Button variant="mono" rounded="sm" className="border">
+          <Button variant="mono" rounded="sm" className="border max-sm:text-xs">
             Todos os filtros
           </Button>
         </div>
-        <div className="flex gap-4 items-center">
-          <span>Filtrar por</span>
-          <Select name="" id="" className="h-full" rounded="sm">
+        <div className="flex gap-4 items-center max-md:justify-center max-md:mt-4">
+          <span className="max-sm:text-xs">Filtrar por</span>
+          <Select name="" id="" className="h-full max-sm:text-xs" rounded="sm">
             <option value="">Adicionado recentemente</option>
           </Select>
         </div>
       </div>
-      <div className="grid grid-cols-3 gap-16 m-8">
+      <div className="grid grid-cols-4 max-lg:grid-cols-3 max-md:grid-cols-2  gap-16 m-8 ">
         {products.map((item, index) => (
           <ProductCard
             key={index}

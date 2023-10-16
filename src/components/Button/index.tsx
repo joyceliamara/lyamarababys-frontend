@@ -56,7 +56,7 @@ export default function Button({
 
   return (
     <a
-      className={`flex justify-center items-center w-fit cursor-pointer ${className} ${props.className}`}
+      className={`flex justify-center items-center text-center w-fit cursor-pointer ${className} ${props.className}`}
       style={{
         borderRadius: getRounded(),
       }}
