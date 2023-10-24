@@ -27,6 +27,10 @@ export default function Button({
       className = "bg-white text-black";
       break;
 
+    case "neutra":
+      className = "bg-[#7C969D] text-white";
+      break;
+
     default:
       className = "bg-[#E3E3E3] text-[#515151]";
       break;
@@ -51,11 +55,14 @@ export default function Button({
 
       case "lg":
         return 12;
+
+      case "xl":
+        return 22;
     }
   }
 
   return (
-    <a
+    <button
       className={`flex justify-center items-center text-center w-fit cursor-pointer ${className} ${props.className}`}
       style={{
         borderRadius: getRounded(),
@@ -63,15 +70,21 @@ export default function Button({
       onClick={onClick}
     >
       {children}
-    </a>
+    </button>
   );
 }
 
 interface ButtonProps {
   children?: ReactNode;
-  variant?: "default" | "primary" | "secondary" | "terciary" | "mono";
-  rounded?: "sm" | "md" | "lg";
+  variant?:
+    | "default"
+    | "primary"
+    | "secondary"
+    | "terciary"
+    | "mono"
+    | "neutra"
+  rounded?: "sm" | "md" | "lg" | "xl";
   size?: "sm" | "md";
   className?: string;
-  onClick?: MouseEventHandler<HTMLAnchorElement> | undefined;
+  onClick?: MouseEventHandler<HTMLButtonElement> | undefined;
 }

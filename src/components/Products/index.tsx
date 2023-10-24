@@ -2,6 +2,7 @@ import { Sacramento } from "next/font/google";
 import Checkbox from "../Checkbox";
 import ProductCard from "../ProductCard";
 import products from "./products.json";
+import api from "@/services/api";
 
 const sacramento = Sacramento({
   weight: ["400"],
@@ -11,17 +12,17 @@ const sacramento = Sacramento({
 export default async function Products() {
   const [responseCategories, responseGenders, responseSizes, responseColors] =
     await Promise.all([
-      fetch("http://localhost:3001/product/category"),
-      fetch("http://localhost:3001/product/gender"),
-      fetch("http://localhost:3001/product/size"),
-      fetch("http://localhost:3001/product/color"),
+      api.get("product/category"),
+      api.get("product/gender"),
+      api.get("product/size"),
+      api.get("product/color"),
     ]);
 
   const filters: Filters = {
-    categories: await responseCategories.json(),
-    genders: await responseGenders.json(),
-    sizes: await responseSizes.json(),
-    colors: await responseColors.json(),
+    categories: responseCategories.data,
+    genders: responseGenders.data,
+    sizes: responseSizes.data,
+    colors: responseColors.data,
   };
 
   return (
