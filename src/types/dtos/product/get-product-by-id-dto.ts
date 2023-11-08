@@ -8,6 +8,7 @@ export default interface GetProductByIdDto {
   discount: number;
   createdAt: string;
   updatedAt: string;
+  favorited: boolean;
   colors: Color[];
   images: Image[];
 }

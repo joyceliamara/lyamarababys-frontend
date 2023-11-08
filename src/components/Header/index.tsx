@@ -13,6 +13,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function Header() {
   const [menuOpened, setMenuOpened] = useState(false);
@@ -46,10 +47,16 @@ export default function Header() {
         <nav className="h-fit">
           {/* desktop */}
           <ul className="hidden lg:flex gap-12">
-            <li className="cursor-pointer">HOME</li>
-            <li className="cursor-pointer">PRODUTOS</li>
-            <li className="flex cursor-pointer">
-              ENTRAR <ChevronDown />
+            <li className="cursor-pointer">
+              <Link href="/">HOME</Link>
+            </li>
+            <li className="cursor-pointer">
+              <Link href="/products">PRODUTOS</Link>
+            </li>
+            <li>
+              <Link href="/login" className="flex cursor-pointer">
+                ENTRAR <ChevronDown />
+              </Link>
             </li>
             <li className="cursor-pointer">
               <ShoppingBag />

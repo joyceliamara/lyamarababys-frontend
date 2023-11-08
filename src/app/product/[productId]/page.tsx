@@ -9,8 +9,9 @@ import formatCurrency from "@/utils/format-currency";
 import Button from "@/components/Button";
 import { Heart } from "lucide-react";
 import Carousel from "@/components/Carousel";
-import { CarouselContext, CarouselProvider } from "@/contexts/CarouselContext";
-import { useContext, useEffect, useState } from "react";
+import { CarouselProvider } from "@/contexts/CarouselContext";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import api from "@/services/api";
 import GetProductByIdDto from "@/types/dtos/product/get-product-by-id-dto";
 import calcDiscount from "@/utils/calc-discount";
@@ -21,20 +22,30 @@ export default function ProductPage({
 }: {
   params: { productId: string };
 }) {
+  const router = useRouter();
+
   const [product, setProduct] = useState<GetProductByIdDto | undefined>(
     undefined
   );
+  const [favorited, setFavorited] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const fetchProductData = async () => {
     try {
+      const token = localStorage.getItem("@lyamarababys-token");
+
       const { data } = await api.get<GetProductByIdDto>(
-        `product/${params.productId}`
+        `product/${params.productId}`,
+        {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : undefined,
+          },
+        }
       );
 
       setProduct(data);
+      setFavorited(data.favorited);
       setLoading(false);
-      console.log({ data });
     } catch (err) {
       console.log(err);
     }
@@ -43,6 +54,58 @@ export default function ProductPage({
   useEffect(() => {
     fetchProductData();
   }, []);
+
+  const addToFavorite = async () => {
+    const token = localStorage.getItem("@lyamarababys-token");
+
+    if (!token) {
+      router.push("/login");
+
+      return;
+    }
+
+    try {
+      await api.post(
+        `product/favorite/${params.productId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setFavorited(true);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const removeFromFavorite = async () => {
+    const token = localStorage.getItem("@lyamarababys-token");
+
+    if (!token) {
+      router.push("/login");
+
+      return;
+    }
+
+    try {
+      await api.post(
+        `product/unfavorite/${params.productId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setFavorited(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div>
@@ -130,8 +193,12 @@ export default function ProductPage({
                   variant="default"
                   rounded="lg"
                   className="mt-4 w-full gap-2 py-3"
+                  onClick={favorited ? removeFromFavorite : addToFavorite}
                 >
-                  <Heart size={18} fill="black" /> Adicionar aos favoritos
+                  <Heart size={18} fill="black" />{" "}
+                  {favorited
+                    ? "Remover dos favoritos"
+                    : "Adicionar aos favoritos"}
                 </Button>
               </div>
             </div>
