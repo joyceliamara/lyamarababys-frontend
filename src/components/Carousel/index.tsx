@@ -7,6 +7,7 @@ import { CarouselContext } from "@/contexts/CarouselContext";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
 export default function Carousel({ galery }: CarouselProps) {
+  // todo: olhar o comportamento desse carousel principalmente quando tem apenas 1 imagem
   const { changeFocusedImage } = useContext(CarouselContext);
 
   const limit = 3;

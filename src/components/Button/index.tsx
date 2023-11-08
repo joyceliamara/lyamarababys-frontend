@@ -12,7 +12,7 @@ export default function Button({
 
   switch (variant) {
     case "primary":
-      className = "bg-[#F8CCD2] text-white";
+      className = "bg-[#EEB8BC] text-white";
       break;
 
     case "secondary":
@@ -68,6 +68,7 @@ export default function Button({
         borderRadius: getRounded(),
       }}
       onClick={onClick}
+      type={props.type || "submit"}
     >
       {children}
     </button>
@@ -82,9 +83,10 @@ interface ButtonProps {
     | "secondary"
     | "terciary"
     | "mono"
-    | "neutra"
+    | "neutra";
   rounded?: "sm" | "md" | "lg" | "xl";
   size?: "sm" | "md";
   className?: string;
+  type?: "submit" | "reset" | "button";
   onClick?: MouseEventHandler<HTMLButtonElement> | undefined;
 }

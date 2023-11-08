@@ -10,24 +10,28 @@ export default function Input({
 
   switch (variant) {
     case "default":
-      inputClassName = "border-[#B0B0B0]";
+      inputClassName = "border-2 border-[#B0B0B0] rounded-md";
       break;
     case "lightning":
-      inputClassName = "border-white bg-white/25 placeholder-white text-white";
+      inputClassName =
+        "border-2 border-white bg-white/25 placeholder-white text-white rounded-md";
+      break;
+    case "filled":
+      inputClassName = "border-b border-[#B0B0B0]";
       break;
   }
 
   return (
     <div className={`flex flex-col ${className}`}>
       {label && (
-        <label htmlFor={props.id} className="font-bold">
+        <label htmlFor={props.id} className="font-bold text-[#303030]">
           {label}
         </label>
       )}
       <input
         {...props}
         id="user"
-        className={`border-2 pl-2 p-1 rounded-md inline-flex ${inputClassName}`}
+        className={`pl-2 p-1 inline-flex ${inputClassName}`}
       />
     </div>
   );
@@ -40,6 +44,6 @@ interface InputProps {
   type?: "text" | "email" | "password";
   id?: string;
   className?: string;
-  variant?: "default" | "lightning";
+  variant?: "default" | "lightning" | "filled";
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
