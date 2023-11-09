@@ -62,7 +62,9 @@ export default function Header() {
               <ShoppingBag />
             </li>
             <li className="cursor-pointer">
-              <Heart />
+              <Link href="/favorites">
+                <Heart />
+              </Link>
             </li>
           </ul>
           {/* mobile */}
