@@ -1,4 +1,19 @@
-export default interface GetProductByIdDto {
+export default interface GetCartItemsDto {
+  id: string;
+  productId: string;
+  userId: string;
+  quantity: number;
+  colorId: string;
+  sizeId: string;
+  createdAt: string;
+  updatedAt: string;
+  orderId: null;
+  product: Product;
+  size: Size;
+  color: Color;
+}
+
+interface Product {
   id: string;
   sku: string;
   name: string;
@@ -8,18 +23,7 @@ export default interface GetProductByIdDto {
   discount: number;
   createdAt: string;
   updatedAt: string;
-  favorited: boolean;
-  colors: Color[];
   images: Image[];
-  quantities: Quantity[];
-}
-
-interface Color {
-  id: string;
-  name: string;
-  code: string;
-  createdAt: string;
-  updatedAt: string;
 }
 
 interface Image {
@@ -31,19 +35,17 @@ interface Image {
   productId: string;
 }
 
-interface Quantity {
-  id: string;
-  createdAt: string;
-  updatedAt: string;
-  sizeId: string;
-  count: number;
-  productId: string;
-  size: Size;
-}
-
 interface Size {
   id: string;
   name: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface Color {
+  id: string;
+  name: string;
+  code: string;
   createdAt: string;
   updatedAt: string;
 }

@@ -16,6 +16,7 @@ import api from "@/services/api";
 import GetProductByIdDto from "@/types/dtos/product/get-product-by-id-dto";
 import calcDiscount from "@/utils/calc-discount";
 import listColors from "@/utils/list-colors";
+import Token from "@/utils/token";
 
 export default function ProductPage({
   params,
@@ -32,7 +33,9 @@ export default function ProductPage({
 
   const fetchProductData = async () => {
     try {
-      const token = localStorage.getItem("@lyamarababys-token");
+      const token = Token.get();
+
+      if (!token) throw new Error("Token not exists");
 
       const { data } = await api.get<GetProductByIdDto>(
         `product/${params.productId}`,
@@ -56,7 +59,9 @@ export default function ProductPage({
   }, []);
 
   const addToFavorite = async () => {
-    const token = localStorage.getItem("@lyamarababys-token");
+    const token = Token.get();
+
+    if (!token) throw new Error("Token not exists");
 
     if (!token) {
       router.push("/login");
@@ -82,7 +87,9 @@ export default function ProductPage({
   };
 
   const removeFromFavorite = async () => {
-    const token = localStorage.getItem("@lyamarababys-token");
+    const token = Token.get();
+
+    if (!token) throw new Error("Token not exists");
 
     if (!token) {
       router.push("/login");
@@ -102,6 +109,35 @@ export default function ProductPage({
       );
 
       setFavorited(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const addToCard = async (
+    productId: string,
+    sizeId: string,
+    colorId: string
+  ) => {
+    try {
+      const token = Token.get();
+
+      if (!token) throw new Error("Token not exists");
+
+      await api.post(
+        "product/cart/add",
+        {
+          productId,
+          sizeId,
+          colorId,
+          quantity: 1,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
     } catch (err) {
       console.log(err);
     }
@@ -186,6 +222,15 @@ export default function ProductPage({
                   variant="terciary"
                   rounded="lg"
                   className="mt-4 w-full py-4"
+                  // todo: ajustar o seletor de cor e tamanho
+                  // todo: adicionar uma informação visual quando for adicionado
+                  onClick={() =>
+                    addToCard(
+                      product.id,
+                      product.quantities[0].sizeId,
+                      product.colors[0].id
+                    )
+                  }
                 >
                   Comprar
                 </Button>

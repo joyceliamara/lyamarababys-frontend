@@ -12,6 +12,7 @@ import Link from "next/link";
 import api from "@/services/api";
 import { isAxiosError } from "axios";
 import validateEmail from "@/utils/validate-email";
+import Token from "@/utils/token";
 
 const dmSerifDisplay = DM_Serif_Display({
   weight: ["400"],
@@ -61,21 +62,11 @@ export default function Register() {
       const { data } = await api.post("user", { email, password });
 
       if (remember) {
-        localStorage.setItem(
-          "@lyamarababys-token",
-          JSON.stringify({
-            value: data.token,
-            expiresInTimestamp: null,
-          })
-        );
+        Token.set(data.token);
       } else {
-        localStorage.setItem(
-          "@lyamarababys-token",
-          JSON.stringify({
-            value: data.token,
-            expiresInTimestamp: new Date().setDate(new Date().getDate() + 1),
-          })
-        );
+        const expiresInTimestamp = new Date().setDate(new Date().getDate() + 1);
+
+        Token.set(data.token, expiresInTimestamp);
       }
 
       api.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;

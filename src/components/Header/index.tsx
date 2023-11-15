@@ -59,7 +59,9 @@ export default function Header() {
               </Link>
             </li>
             <li className="cursor-pointer">
-              <ShoppingBag />
+              <Link href="/cart">
+                <ShoppingBag />
+              </Link>
             </li>
             <li className="cursor-pointer">
               <Link href="/favorites">

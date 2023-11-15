@@ -11,6 +11,7 @@ import { FormEvent, useState, useEffect } from "react";
 import Link from "next/link";
 import api from "@/services/api";
 import { AxiosError, isAxiosError } from "axios";
+import Token from "@/utils/token";
 
 const dmSerifDisplay = DM_Serif_Display({
   weight: ["400"],
@@ -45,21 +46,11 @@ export default function Login() {
       const { data } = await api.post("user/auth", { email, password });
 
       if (remember) {
-        localStorage.setItem(
-          "@lyamarababys-token",
-          JSON.stringify({
-            value: data.token,
-            expiresInTimestamp: null,
-          })
-        );
+        Token.set(data.token);
       } else {
-        localStorage.setItem(
-          "@lyamarababys-token",
-          JSON.stringify({
-            value: data.token,
-            expiresInTimestamp: new Date().setDate(new Date().getDate() + 1),
-          })
-        );
+        const expiresInTimestamp = new Date().setDate(new Date().getDate() + 1);
+
+        Token.set(data.token, expiresInTimestamp);
       }
 
       api.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
@@ -157,7 +148,7 @@ export default function Login() {
               <div className="mt-6">
                 <span className="">Não possui conta?</span>
                 <Link
-                  href="/"
+                  href="/register"
                   className="ml-2 border-b-2 border-[#7C7C7C] cursor-pointer"
                 >
                   Crie agora

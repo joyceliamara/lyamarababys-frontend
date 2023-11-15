@@ -10,6 +10,7 @@ import api from "@/services/api";
 import { useEffect, useState } from "react";
 import ListFavoritesDto from "@/types/dtos/product/list-favorites-dto";
 import calcDiscount from "@/utils/calc-discount";
+import Token from "@/utils/token";
 
 const dmSerifDisplay = DM_Serif_Display({
   weight: ["400"],
@@ -22,7 +23,9 @@ export default function Favorites() {
 
   const fetchFavorites = async () => {
     try {
-      const token = localStorage.getItem("@lyamarababys-token");
+      const token = Token.get();
+
+      if (!token) throw new Error("Token not exists");
 
       const { data } = await api.get<ListFavoritesDto[]>("product/favorite", {
         headers: {
