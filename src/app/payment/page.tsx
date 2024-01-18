@@ -13,6 +13,11 @@ import PaymentSlip from "@/assets/icons/payment-slip.svg";
 import CreditCard from "@/assets/icons/credit-card.svg";
 import DebitCard from "@/assets/icons/debit-card.svg";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import GetCartItemsDto from "@/types/dtos/product/get-cart-items-dto";
+import Token from "@/utils/token";
+import api from "@/services/api";
+import calcDiscount from "@/utils/calc-discount";
 
 const dmSerifDisplay = DM_Serif_Display({
   weight: ["400"],
@@ -20,6 +25,43 @@ const dmSerifDisplay = DM_Serif_Display({
 });
 
 export default function Payment() {
+  const [items, setItems] = useState<GetCartItemsDto[]>([]);
+
+  const fetchItems = async () => {
+    try {
+      const token = Token.get();
+
+      if (!token) throw new Error("Token not exists");
+
+      const { data } = await api.get<GetCartItemsDto[]>("product/cart", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setItems(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchItems();
+  }, []);
+
+  const calcFinalPrice = (): number => {
+    return items.reduce((prev, item) => {
+      const quantity = item.quantity;
+      const price = item.product.price;
+      const discount = item.product.discount;
+
+      if (discount) {
+        return prev + calcDiscount(discount, price * quantity);
+      }
+      return prev + price * quantity;
+    }, 0);
+  };
+
   return (
     <div>
       <Header />
@@ -44,8 +86,10 @@ export default function Payment() {
             <div className="bg-white w-64 py-4 px-6 max-lg:w-full rounded-md shadow-md">
               <span className="text-[#7C7C7C]">Resumo da Compra</span>
               <div className="flex justify-between mt-4">
-                <span>1 produto</span>
-                <span>{formatCurrency(products[0].price)}</span>
+                <span>
+                  {items.length} {items.length > 1 ? "produtos" : "produto"}
+                </span>
+                <span>{formatCurrency(calcFinalPrice())}</span>
               </div>
               <div className="flex justify-between mt-4">
                 <span>Frete</span>
@@ -54,7 +98,7 @@ export default function Payment() {
               <hr className="my-4" />
               <div className="flex justify-between">
                 <b>Total</b>
-                <b>{formatCurrency(products[0].price + 18.9)}</b>
+                <b>{formatCurrency(calcFinalPrice() + 18.9)}</b>
               </div>
             </div>
             <div className="flex-1" />

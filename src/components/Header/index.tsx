@@ -39,7 +39,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="flex justify-between items-center px-6 lg:px-12 py-8">
+      <header className="flex justify-between items-center px-6 lg:px-12 py-8  bg-[#edf4f5]">
         <div className="flex gap-1 lg:gap-2">
           <Image className="inline w-[80%] lg:w-[100%]" src={logo} alt="" />
           <Image className="inline w-4 ml-2" src={anchor} alt="" />

@@ -6,6 +6,7 @@ export default function Button({
   rounded,
   onClick,
   size = "md",
+  disabled = false,
   ...props
 }: ButtonProps) {
   let className = "";
@@ -63,12 +64,14 @@ export default function Button({
 
   return (
     <button
-      className={`flex justify-center items-center text-center w-fit cursor-pointer ${className} ${props.className}`}
+      className={`flex justify-center items-center text-center w-fit ${className} ${props.className}`}
       style={{
         borderRadius: getRounded(),
+        cursor: disabled ? "not-allowed" : "pointer",
       }}
-      onClick={onClick}
+      onClick={disabled ? () => {} : onClick}
       type={props.type || "submit"}
+      disabled={disabled}
     >
       {children}
     </button>
@@ -89,4 +92,5 @@ interface ButtonProps {
   className?: string;
   type?: "submit" | "reset" | "button";
   onClick?: MouseEventHandler<HTMLButtonElement> | undefined;
+  disabled?: boolean;
 }

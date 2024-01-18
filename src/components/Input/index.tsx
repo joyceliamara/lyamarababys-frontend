@@ -39,7 +39,7 @@ export default function Input({
 
 interface InputProps {
   label?: string;
-  value?: string;
+  value?: string | number;
   placeholder?: string;
   type?: "text" | "email" | "password";
   id?: string;

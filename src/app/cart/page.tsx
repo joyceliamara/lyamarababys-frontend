@@ -13,6 +13,7 @@ import GetCartItemsDto from "@/types/dtos/product/get-cart-items-dto";
 import calcDiscount from "@/utils/calc-discount";
 import Link from "next/link";
 import Token from "@/utils/token";
+import { useRouter } from "next/navigation";
 
 const dmSerifDisplay = DM_Serif_Display({
   weight: ["400"],
@@ -20,6 +21,8 @@ const dmSerifDisplay = DM_Serif_Display({
 });
 
 export default function Cart() {
+  const route = useRouter();
+
   const [items, setItems] = useState<GetCartItemsDto[]>([]);
 
   const fetchItems = async () => {
@@ -219,7 +222,12 @@ export default function Cart() {
                 )}
               </b>
             </div>
-            <Button variant="terciary" rounded="md" className="w-full my-4">
+            <Button
+              variant="terciary"
+              rounded="md"
+              className="w-full my-4"
+              onClick={() => route.push("/delivery")}
+            >
               Continuar
             </Button>
             <Link

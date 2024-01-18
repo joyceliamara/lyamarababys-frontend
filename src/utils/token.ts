@@ -9,11 +9,11 @@ export default class Token {
     );
   }
 
-  static get() {
+  static get(redirect = true) {
     const localStorageItem = localStorage.getItem("@lyamarababys-token");
 
     if (!localStorageItem) {
-      window.location.href = "/login";
+      if (redirect) window.location.href = "/login";
 
       return undefined;
     }

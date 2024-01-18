@@ -33,9 +33,7 @@ export default function ProductPage({
 
   const fetchProductData = async () => {
     try {
-      const token = Token.get();
-
-      if (!token) throw new Error("Token not exists");
+      const token = Token.get(false);
 
       const { data } = await api.get<GetProductByIdDto>(
         `product/${params.productId}`,
@@ -219,20 +217,23 @@ export default function ProductPage({
 
               <div>
                 <Button
-                  variant="terciary"
+                  variant={product.quantities.length ? "terciary" : "default"}
                   rounded="lg"
                   className="mt-4 w-full py-4"
+                  disabled={!product.quantities.length}
                   // todo: ajustar o seletor de cor e tamanho
                   // todo: adicionar uma informação visual quando for adicionado
                   onClick={() =>
                     addToCard(
                       product.id,
-                      product.quantities[0].sizeId,
-                      product.colors[0].id
+                      product.quantities[0]?.sizeId,
+                      product.colors[0]?.id
                     )
                   }
                 >
-                  Comprar
+                  {product.quantities.length
+                    ? "Comprar"
+                    : "Produto indisponível"}
                 </Button>
                 <Button
                   variant="default"
