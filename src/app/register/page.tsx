@@ -13,6 +13,7 @@ import api from "@/services/api";
 import { isAxiosError } from "axios";
 import validateEmail from "@/utils/validate-email";
 import Token from "@/utils/token";
+import { useRouter } from "next/navigation";
 
 const dmSerifDisplay = DM_Serif_Display({
   weight: ["400"],
@@ -20,6 +21,7 @@ const dmSerifDisplay = DM_Serif_Display({
 });
 
 export default function Register() {
+  const router = useRouter();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -70,7 +72,7 @@ export default function Register() {
       }
 
       api.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
-      window.location.replace("/");
+      router.replace("/");
     } catch (err: any) {
       if (!isAxiosError(err)) {
         console.log("error", err);

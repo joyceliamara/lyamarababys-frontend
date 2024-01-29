@@ -10,8 +10,9 @@ import Input from "@/components/Input";
 import { FormEvent, useState, useEffect } from "react";
 import Link from "next/link";
 import api from "@/services/api";
-import { AxiosError, isAxiosError } from "axios";
+import { isAxiosError } from "axios";
 import Token from "@/utils/token";
+import { useRouter } from "next/navigation";
 
 const dmSerifDisplay = DM_Serif_Display({
   weight: ["400"],
@@ -19,6 +20,7 @@ const dmSerifDisplay = DM_Serif_Display({
 });
 
 export default function Login() {
+  const router = useRouter();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -54,7 +56,7 @@ export default function Login() {
       }
 
       api.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
-      window.location.replace("/");
+      router.replace("/");
     } catch (err: any) {
       if (!isAxiosError(err)) {
         console.log("error", err);

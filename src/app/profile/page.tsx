@@ -2,11 +2,14 @@
 
 import Header from "@/components/Header";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { ReactNode, useLayoutEffect, useState } from "react";
 
 export default function MyAccount() {
+  const router = useRouter();
+
   useLayoutEffect(() => {
-    window.location.replace("/profile/register");
+    router.replace("/profile/register");
   });
 
   return <></>;
@@ -19,10 +22,11 @@ export function ProfileLayout({
   children?: ReactNode;
   className?: string;
 }) {
+  const pathname = usePathname();
   const [active, setActive] = useState<ItemType | undefined>();
 
   useLayoutEffect(() => {
-    switch (window.location.pathname) {
+    switch (pathname) {
       case "/profile/register":
         setActive("REGISTER_DATA");
         break;
@@ -33,12 +37,12 @@ export function ProfileLayout({
         setActive("ORDERS");
         break;
     }
-  }, [window.location.pathname]);
+  }, [pathname]);
 
   return (
     <>
       <Header />
-      <div className="flex flex-row">
+      <div className="flex flex-row max-w-5xl w-full mx-auto">
         <div>
           <aside className="sticky top-0 p-8">
             <span className="text-3xl font-bold">Perfil</span>

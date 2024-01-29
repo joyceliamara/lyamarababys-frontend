@@ -53,7 +53,7 @@ export default function ProfileAddresses() {
         {addresses.map((i, index) => (
           <li
             key={index}
-            className="flex gap-3 justify-between items-center text-sm max-w-sm bg-white rounded-md py-2 px-4 shadow-md"
+            className="flex gap-3 justify-between items-center text-sm flex-1 bg-white rounded-md py-2 px-4 shadow-md"
           >
             <div className="flex flex-col">
               <span>

@@ -22,7 +22,7 @@ export default function Input({
   }
 
   return (
-    <div className={`flex flex-col ${className}`}>
+    <div className={`flex flex-col select-none ${className}`}>
       {label && (
         <label htmlFor={props.id} className="font-bold text-[#303030]">
           {label}

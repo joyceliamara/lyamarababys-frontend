@@ -64,7 +64,7 @@ export default function Button({
 
   return (
     <button
-      className={`flex justify-center items-center text-center w-fit ${className} ${props.className}`}
+      className={`flex justify-center items-center text-center w-fit select-none ${className} ${props.className}`}
       style={{
         borderRadius: getRounded(),
         cursor: disabled ? "not-allowed" : "pointer",
