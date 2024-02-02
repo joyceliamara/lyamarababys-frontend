@@ -1,7 +1,9 @@
+import LocalStorageKeys from "@/enums/localStorageKeys";
+
 export default class Token {
   static set(value: string, expiresInTimestamp?: number) {
     localStorage.setItem(
-      "@lyamarababys-token",
+      LocalStorageKeys.Token,
       JSON.stringify({
         value,
         expiresInTimestamp,
@@ -10,7 +12,7 @@ export default class Token {
   }
 
   static get(redirect = true) {
-    const localStorageItem = localStorage.getItem("@lyamarababys-token");
+    const localStorageItem = localStorage.getItem(LocalStorageKeys.Token);
 
     if (!localStorageItem) {
       if (redirect) window.location.href = "/login";

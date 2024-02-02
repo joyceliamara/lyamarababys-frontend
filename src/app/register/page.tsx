@@ -7,7 +7,7 @@ import { DM_Serif_Display } from "next/font/google";
 import Button from "@/components/Button";
 import Checkbox from "@/components/Checkbox";
 import Input from "@/components/Input";
-import { FormEvent, useState, useEffect } from "react";
+import { FormEvent, useState, useLayoutEffect } from "react";
 import Link from "next/link";
 import api from "@/services/api";
 import { isAxiosError } from "axios";
@@ -22,14 +22,14 @@ const dmSerifDisplay = DM_Serif_Display({
 
 export default function Register() {
   const router = useRouter();
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isMobile, setIsMobile] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rPassword, setRPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [remember, setRemember] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const handleScreen = () => {
       setIsMobile(window.innerWidth <= 768);
     };

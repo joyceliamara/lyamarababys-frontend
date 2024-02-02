@@ -7,12 +7,10 @@ import { DM_Serif_Display } from "next/font/google";
 import Button from "@/components/Button";
 import Checkbox from "@/components/Checkbox";
 import Input from "@/components/Input";
-import { FormEvent, useState, useEffect } from "react";
+import { FormEvent, useState, useLayoutEffect } from "react";
 import Link from "next/link";
-import api from "@/services/api";
-import { isAxiosError } from "axios";
-import Token from "@/utils/token";
-import { useRouter } from "next/navigation";
+import { useLogin } from "./hooks/useLogin";
+import env from "@/env";
 
 const dmSerifDisplay = DM_Serif_Display({
   weight: ["400"],
@@ -20,14 +18,13 @@ const dmSerifDisplay = DM_Serif_Display({
 });
 
 export default function Login() {
-  const router = useRouter();
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const { login, error } = useLogin();
+  const [isMobile, setIsMobile] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const handleScreen = () => {
       setIsMobile(window.innerWidth <= 768);
     };
@@ -42,40 +39,7 @@ export default function Login() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    setErrorMessage("");
-
-    try {
-      const { data } = await api.post("user/auth", { email, password });
-
-      if (remember) {
-        Token.set(data.token);
-      } else {
-        const expiresInTimestamp = new Date().setDate(new Date().getDate() + 1);
-
-        Token.set(data.token, expiresInTimestamp);
-      }
-
-      api.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
-      router.replace("/");
-    } catch (err: any) {
-      if (!isAxiosError(err)) {
-        console.log("error", err);
-      }
-
-      const { data } = err.response;
-
-      switch (data.path[0]) {
-        case "email":
-          setErrorMessage("Usuário não encontrado");
-          break;
-        case "password":
-          setErrorMessage("Senha inválida");
-          break;
-        default:
-          setErrorMessage(data.message);
-          break;
-      }
-    }
+    await login({ email, password, remember });
   };
 
   return (
@@ -119,9 +83,7 @@ export default function Login() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            {errorMessage && (
-              <p className="mt-2 text-red-500">{errorMessage}</p>
-            )}
+            {error && <p className="mt-2 text-red-500">{error}</p>}
             <div className="flex justify-between mt-8">
               <div className="flex gap-2">
                 <Checkbox

@@ -6,6 +6,7 @@ import { useState } from "react";
 import Input from "@/components/Input";
 import Dialog from "@/components/Dialog";
 import Button from "@/components/Button";
+import { useAddress } from "./hooks/useAddress";
 
 interface Address {
   address: string;
@@ -17,16 +18,7 @@ interface Address {
 }
 
 export default function ProfileAddresses() {
-  const [addresses, setAddresses] = useState<Address[]>(
-    Array(5).fill({
-      address: "Rua Barão de Amazonas",
-      number: 300,
-      neighborhood: "Centro",
-      city: "Campos dos Goytacazes",
-      uf: "RJ",
-      cep: "28080135",
-    })
-  );
+  const { addresses } = useAddress();
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [mode, setMode] = useState<"edit" | "new">("edit");
   const [deleteDialog, setDeleteDialog] = useState(false);
@@ -57,10 +49,10 @@ export default function ProfileAddresses() {
           >
             <div className="flex flex-col">
               <span>
-                {i.address}, {i.number} - {i.neighborhood}
+                {i.street}, {i.number} - {i.neighborhood}
               </span>
               <span>
-                {i.city} - {i.uf}, {i.cep}
+                {i.city} - {i.state}, {i.cep}
               </span>
               {index !== 0 && (
                 <span className="text-blue-500 cursor-pointer mt-2 w-fit">
@@ -73,7 +65,7 @@ export default function ProfileAddresses() {
                 size={18}
                 className="cursor-pointer text-zinc-700"
                 onClick={() => {
-                  setFocusedAddress(i);
+                  // setFocusedAddress(i);
                   setShowEditDialog(true);
                   setMode("edit");
                 }}

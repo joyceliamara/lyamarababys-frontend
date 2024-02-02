@@ -1,8 +1,8 @@
-import api from "@/services/api";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Filters from "@/types/filters";
 import ProductList from "./ProductList";
+import request from "@/api/request";
 
 export default async function Products() {
   const [
@@ -12,11 +12,11 @@ export default async function Products() {
     responseColors,
     responseProducts,
   ] = await Promise.all([
-    api.get("product/category"),
-    api.get("product/gender"),
-    api.get("product/size"),
-    api.get("product/color"),
-    api.get("product"),
+    request.get("product/category"),
+    request.get("product/gender"),
+    request.get("product/size"),
+    request.get("product/color"),
+    request.get("product"),
   ]);
 
   const filters: Filters = {
