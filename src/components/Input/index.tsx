@@ -1,3 +1,5 @@
+"use client";
+
 import { ChangeEvent } from "react";
 
 export default function Input({
@@ -21,6 +23,8 @@ export default function Input({
       break;
   }
 
+  console.log(props);
+
   return (
     <div className={`flex flex-col select-none ${className}`}>
       {label && (
@@ -28,11 +32,7 @@ export default function Input({
           {label}
         </label>
       )}
-      <input
-        {...props}
-        id="user"
-        className={`pl-2 p-1 inline-flex ${inputClassName}`}
-      />
+      <input className={`pl-2 p-1 inline-flex ${inputClassName}`} {...props} />
     </div>
   );
 }
@@ -40,6 +40,8 @@ export default function Input({
 interface InputProps {
   label?: string;
   value?: string | number;
+  name?: string;
+  defaultValue?: string;
   placeholder?: string;
   type?: "text" | "email" | "password";
   id?: string;

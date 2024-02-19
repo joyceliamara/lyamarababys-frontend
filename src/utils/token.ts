@@ -15,7 +15,9 @@ export default class Token {
     const localStorageItem = localStorage.getItem(LocalStorageKeys.Token);
 
     if (!localStorageItem) {
-      if (redirect) window.location.href = "/login";
+      const { pathname } = window.location;
+
+      if (redirect && pathname !== "/login") window.location.href = "/login";
 
       return undefined;
     }

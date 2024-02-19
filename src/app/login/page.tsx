@@ -10,7 +10,6 @@ import Input from "@/components/Input";
 import { FormEvent, useState, useLayoutEffect } from "react";
 import Link from "next/link";
 import { useLogin } from "./hooks/useLogin";
-import env from "@/env";
 
 const dmSerifDisplay = DM_Serif_Display({
   weight: ["400"],

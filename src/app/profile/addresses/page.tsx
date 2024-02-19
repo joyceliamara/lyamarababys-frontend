@@ -7,10 +7,11 @@ import Input from "@/components/Input";
 import Dialog from "@/components/Dialog";
 import Button from "@/components/Button";
 import { useAddress } from "./hooks/useAddress";
+import { ModalMode, useAddressModal } from "./hooks/useAddressModal";
 
 interface Address {
   address: string;
-  number: number;
+  number?: number;
   neighborhood: string;
   city: string;
   uf: string;
@@ -18,13 +19,25 @@ interface Address {
 }
 
 export default function ProfileAddresses() {
-  const { addresses } = useAddress();
-  const [showEditDialog, setShowEditDialog] = useState(false);
-  const [mode, setMode] = useState<"edit" | "new">("edit");
   const [deleteDialog, setDeleteDialog] = useState(false);
-  const [focusedAddress, setFocusedAddress] = useState<Address | undefined>(
-    undefined
-  );
+  const [toDeleteId, setToDeleteId] = useState<string | undefined>();
+  const { addresses, fetchAddress } = useAddress();
+  const {
+    modalActive,
+    editAddress,
+    newAddress,
+    formData,
+    onChangeFormData,
+    onSubmit,
+    deleteAddress,
+    ...addressModal
+  } = useAddressModal();
+
+  const onDelete = () => {
+    setToDeleteId(undefined);
+    setDeleteDialog(false);
+    fetchAddress();
+  };
 
   return (
     <ProfileLayout>
@@ -32,11 +45,7 @@ export default function ProfileAddresses() {
         Endereços{" "}
         <button
           className="hover:bg-white p-2 rounded-full"
-          onClick={() => {
-            setFocusedAddress({} as any);
-            setShowEditDialog(true);
-            setMode("new");
-          }}
+          onClick={newAddress}
         >
           <Plus size="18" />
         </button>
@@ -64,57 +73,76 @@ export default function ProfileAddresses() {
               <Edit
                 size={18}
                 className="cursor-pointer text-zinc-700"
-                onClick={() => {
-                  // setFocusedAddress(i);
-                  setShowEditDialog(true);
-                  setMode("edit");
-                }}
+                onClick={() => editAddress(i)}
               />
               <X
                 size={18}
                 className="cursor-pointer text-red-700"
-                onClick={() => setDeleteDialog(true)}
+                onClick={() => {
+                  setDeleteDialog(true);
+                  setToDeleteId(i.id);
+                }}
               />
             </div>
           </li>
         ))}
       </ul>
-      {showEditDialog && focusedAddress && (
+      {modalActive && (
         <Dialog
-          onClose={() => setShowEditDialog(false)}
+          onClose={addressModal.onClose}
           title={
-            mode === "edit" ? "Editar endereço" : "Cadastrar novo endereço"
+            addressModal.mode === ModalMode.Edit
+              ? "Editar endereço"
+              : "Cadastrar novo endereço"
           }
         >
-          <form className="flex flex-col gap-2">
-            <Input placeholder="Endereço" value={focusedAddress.address} />
+          <form
+            className="flex flex-col gap-2"
+            onSubmit={(e) => onSubmit(e, fetchAddress)}
+          >
+            <Input
+              placeholder="Endereço"
+              defaultValue={formData.street}
+              name="street"
+              onChange={onChangeFormData}
+            />
             <div className="flex gap-2">
               <Input
                 placeholder="Número"
-                value={focusedAddress.number}
+                defaultValue={formData.number}
                 className="w-1/5"
+                name="number"
+                onChange={onChangeFormData}
               />
               <Input
                 placeholder="Bairro"
-                value={focusedAddress.neighborhood}
+                defaultValue={formData.neighborhood}
                 className="flex-1"
+                name="neighborhood"
+                onChange={onChangeFormData}
               />
             </div>
             <div className="flex gap-2">
               <Input
                 placeholder="CEP"
-                value={focusedAddress.cep}
+                defaultValue={formData.cep}
                 className="w-1/5"
+                name="cep"
+                onChange={onChangeFormData}
               />
               <Input
                 placeholder="Cidade"
-                value={focusedAddress.city}
+                defaultValue={formData.city}
                 className="flex-1"
+                name="city"
+                onChange={onChangeFormData}
               />
               <Input
-                placeholder="RJ"
-                value={focusedAddress.uf}
+                placeholder="UF"
+                defaultValue={formData.state}
                 className="w-1/12"
+                name="state"
+                onChange={onChangeFormData}
               />
             </div>
             <div className="flex gap-2 mt-4">
@@ -131,7 +159,10 @@ export default function ProfileAddresses() {
           Tem certeza que deseja deletar?
           <div className="flex gap-2 mt-4">
             <Button className="bg-green-500 text-white">Manter</Button>
-            <Button className="bg-red-500 text-white" onClick={() => {}}>
+            <Button
+              className="bg-red-500 text-white"
+              onClick={() => deleteAddress(toDeleteId as string, onDelete)}
+            >
               Excluir
             </Button>
           </div>
