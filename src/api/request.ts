@@ -1,27 +1,38 @@
-import env from "@/env";
-import Sentry from "@/services/sentry";
-import Token from "@/utils/token";
 import axios from "axios";
-
-const getBearer = () => {
-  const token = Token.get();
-
-  return token ? `Bearer ${token}` : undefined;
-};
+import { redirect } from "next/navigation";
 
 const request = axios.create({
-  baseURL: env.baseUrl.origin,
-  headers: {
-    Authorization: getBearer(),
-  },
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+  withCredentials: true,
 });
 
-request.interceptors.response.use((response) => {
-  if (String(response.status).startsWith("5")) {
-    Sentry.captureMessage(response.data);
+request.interceptors.request.use((config) => {
+  if (isServer) {
+    const { cookies } = require("next/headers");
+
+    const token = cookies().get("token");
+
+    if (token) {
+      config.headers.Authorization = token.value;
+    }
+
+    return config;
   }
 
-  return response;
+  return config;
 });
+
+request.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 403) {
+      return redirect("/login");
+    }
+
+    return Promise.reject(error);
+  }
+);
+
+const isServer = typeof window === "undefined";
 
 export default request;

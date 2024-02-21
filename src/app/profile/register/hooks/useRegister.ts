@@ -11,6 +11,7 @@ import Sentry from "@/services/sentry";
 import { GetSelfDataOutput } from "@/api/user/output/get-self-data-output";
 
 export const useRegister = () => {
+  const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<GetSelfDataOutput | undefined>();
   const methods = useForm({
     defaultValues,
@@ -32,6 +33,8 @@ export const useRegister = () => {
   const updateProfile = async (data: ProfileFormData) => {
     if (!user) return;
 
+    setLoading(true);
+
     try {
       await UserApi.updateProfile({
         ...data,
@@ -41,8 +44,10 @@ export const useRegister = () => {
       });
     } catch (err) {
       Sentry.captureException(err);
+    } finally {
+      setLoading(false);
     }
   };
 
-  return { methods, user, updateProfile };
+  return { methods, user, updateProfile, loading };
 };

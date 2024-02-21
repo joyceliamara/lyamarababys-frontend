@@ -1,16 +1,24 @@
 "use client";
 
-import Input from "@/components/Input";
 import { ProfileLayout } from "../page";
 import { Pencil } from "lucide-react";
 import { FormProvider } from "react-hook-form";
-import Button from "@/components/Button";
 import { useRegister } from "./hooks/useRegister";
 import { ProfileFields } from "./forms/profileForm";
 import { useEffect } from "react";
+import TextField from "@/components/TextField";
+import { Form } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { ReloadIcon } from "@radix-ui/react-icons";
 
 export default function ProfileRegisterData() {
-  const { methods, user, updateProfile } = useRegister();
+  const {
+    methods,
+    user,
+    updateProfile,
+    loading: loadingRegister,
+  } = useRegister();
 
   useEffect(() => {
     if (!user) return;
@@ -27,35 +35,33 @@ export default function ProfileRegisterData() {
         </div>
       </div>
       <div className="flex gap-20">
-        <form
-          className="flex gap-4 flex-col w-72"
-          onSubmit={methods.handleSubmit(updateProfile, (err) => {
-            console.log("Error:", err);
-          })}
-        >
-          <input {...methods.register(ProfileFields.Name)} />
-          <input {...methods.register(ProfileFields.Surname)} />
-          <input value={user?.email} disabled />
-          {/* <Input label="Nome" {...methods.register(ProfileFields.Name)} />
-          <Input label="Sobrenome" name={ProfileFields.Surname} />
-          <Input label="Email" name={ProfileFields.Email} /> */}
-          <Button rounded="md" className="self-end mt-4">
-            Salvar
-          </Button>
-        </form>
+        <Form {...methods}>
+          <form
+            className="flex gap-4 flex-col w-72"
+            onSubmit={methods.handleSubmit(updateProfile, (err) => {
+              console.log("Error:", err);
+            })}
+          >
+            <TextField name={ProfileFields.Name} placeholder="Nome" />
+            <TextField name={ProfileFields.Surname} placeholder="Sobrenome" />
+            <Input value={user?.email} disabled />
+            <Button className="self-end mt-4 bg-slate-600 hover:bg-slate-600">
+              {loadingRegister ? (
+                <>
+                  <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                  Salvando
+                </>
+              ) : (
+                "Salvar"
+              )}
+            </Button>
+          </form>
+        </Form>
         <form className="flex flex-col gap-4  w-72">
-          <Input
-            type="password"
-            label="Senha atual"
-            placeholder="Digite aqui"
-          />
-          <Input type="password" label="Nova senha" placeholder="Digite aqui" />
-          <Input
-            type="password"
-            label="Repita a senha"
-            placeholder="Digite aqui"
-          />
-          <Button rounded="md" className="self-end mt-4">
+          <Input type="password" placeholder="Senha atual" />
+          <Input type="password" placeholder="Nova senha" />
+          <Input type="password" placeholder="Repita a senha" />
+          <Button className="self-end mt-4 bg-slate-600 hover:bg-slate-600">
             Alterar
           </Button>
         </form>

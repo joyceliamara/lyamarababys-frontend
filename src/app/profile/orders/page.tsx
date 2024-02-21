@@ -1,13 +1,11 @@
-"use client";
-
 import Link from "next/link";
 import { ProfileLayout } from "../page";
 import useOrder from "./hooks/useOrder";
 import formatCurrency from "@/utils/format-currency";
 import { OrderStatus } from "@/api/order/output/oders-list-output";
 
-export default function Orders() {
-  const { orders } = useOrder();
+export default async function Orders() {
+  const { orders } = await useOrder();
 
   const formatStatus = (status: OrderStatus) => {
     switch (status) {
