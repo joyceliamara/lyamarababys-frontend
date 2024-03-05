@@ -3,40 +3,31 @@ import Footer from "@/components/Footer";
 import Filters from "@/types/filters";
 import ProductList from "./ProductList";
 import request from "@/api/request";
+import useProducts from "./hooks/useProducts";
 
 export default async function Products() {
-  const [
-    responseCategories,
-    responseGenders,
-    responseSizes,
-    responseColors,
-    responseProducts,
-  ] = await Promise.all([
-    request.get("product/category"),
-    request.get("product/gender"),
-    request.get("product/size"),
-    request.get("product/color"),
-    request.get("product"),
-  ]);
+  const { categories, colors, genders, products, sizes } = await useProducts();
+
+  console.log(products);
 
   const filters: Filters = {
-    categories: responseCategories.data.map((i: any) => ({
+    categories: categories.map((i: any) => ({
       ...i,
       selected: false,
     })),
-    genders: responseGenders.data.map((i: any) => ({
+    genders: genders.map((i: any) => ({
       ...i,
       selected: false,
     })),
-    sizes: responseSizes.data.map((i: any) => ({
+    sizes: sizes.map((i: any) => ({
       ...i,
       selected: false,
     })),
-    colors: responseColors.data.map((i: any) => ({
+    colors: colors.map((i: any) => ({
       ...i,
       selected: false,
     })),
-    products: responseProducts.data.items,
+    products: products,
   };
 
   return (
@@ -45,7 +36,7 @@ export default async function Products() {
       <div className="flex gap-4 p-10 lg:p-20">
         <ProductList
           {...filters}
-          hasNextPage={responseProducts?.data?.hasNextPage ?? false}
+          hasNextPage={products?.hasNextPage ?? false}
         />
       </div>
       <Footer />

@@ -1,3 +1,4 @@
+'use client'
 import { ReactNode, MouseEventHandler } from "react";
 
 export default function Button({

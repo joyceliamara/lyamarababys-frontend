@@ -3,6 +3,9 @@ import Checkbox from "../Checkbox";
 import ProductCard from "../ProductCard";
 import products from "./products.json";
 import api from "@/services/api";
+import request from "@/api/request";
+import ProductApi from "@/api/product/product.api";
+import useProducts from "@/app/products/hooks/useProducts";
 
 const sacramento = Sacramento({
   weight: ["400"],
@@ -10,20 +13,7 @@ const sacramento = Sacramento({
 });
 
 export default async function Products() {
-  const [responseCategories, responseGenders, responseSizes, responseColors] =
-    await Promise.all([
-      api.get("product/category"),
-      api.get("product/gender"),
-      api.get("product/size"),
-      api.get("product/color"),
-    ]);
-
-  const filters: Filters = {
-    categories: responseCategories.data,
-    genders: responseGenders.data,
-    sizes: responseSizes.data,
-    colors: responseColors.data,
-  };
+  const { categories, genders, sizes, colors } = await useProducts();
 
   return (
     <div>
@@ -37,7 +27,7 @@ export default async function Products() {
           <div>
             <b>CATEGORIA</b>
             <ul className="flex flex-col gap-1 mt-2">
-              {filters.categories.map((i) => (
+              {categories.map((i: any) => (
                 <li className="flex gap-2 items-center" key={i.id}>
                   <Checkbox />
                   {i.name}
@@ -48,7 +38,7 @@ export default async function Products() {
           <div>
             <b>GÊNERO</b>
             <ul className="flex flex-col gap-1 mt-2">
-              {filters.genders.map((i) => (
+              {genders.map((i: any) => (
                 <li className="flex gap-2 items-center" key={i.id}>
                   <Checkbox />
                   {i.name}
@@ -59,7 +49,7 @@ export default async function Products() {
           <div>
             <b>TAMANHO</b>
             <ul className="flex flex-col gap-1 mt-2">
-              {filters.sizes.map((i) => (
+              {sizes.map((i: any) => (
                 <li className="flex gap-2 items-center" key={i.id}>
                   <Checkbox />
                   {i.name}
@@ -70,7 +60,7 @@ export default async function Products() {
           <div>
             <b>CORES</b>
             <ul>
-              {filters.colors.map((i) => (
+              {colors.map((i: any) => (
                 <li className="flex gap-2 items-center" key={i.id}>
                   <Checkbox />
                   <div
