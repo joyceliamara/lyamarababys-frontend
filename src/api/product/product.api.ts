@@ -1,5 +1,6 @@
 import request from "../request";
 import { AddProductToCardInput } from "./inputs/add-product-to-cart";
+import { GetFavoritesOutput } from "./outputs/get-favorites-output";
 import { GetProductOutput } from "./outputs/get-product-output";
 
 export default class ProductApi {
@@ -9,6 +10,10 @@ export default class ProductApi {
 
   static async addToCard(input: AddProductToCardInput) {
     return request.post("product/cart/add", input);
+  }
+
+  static async getFavorited() {
+    return request.get<GetFavoritesOutput>("product/favorite");
   }
 
   static async addToFavorite(id: string) {

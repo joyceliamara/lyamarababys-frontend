@@ -1,20 +1,18 @@
 "use client";
 
-import { AddProductToCardInput } from "@/api/product/inputs/add-product-to-cart";
 import { GetProductOutput } from "@/api/product/outputs/get-product-output";
 import Button from "@/components/Button";
 import calcDiscount from "@/utils/calc-discount";
 import formatCurrency from "@/utils/format-currency";
 import { Heart } from "lucide-react";
 import { useState } from "react";
+import useProductActions from "../hooks/useProductActions";
 
-export default function ProductActions({
-  product,
-  addToCart,
-  addToFavorite,
-  removeFromFavorite,
-}: ProductActionsProps) {
+export default function ProductActions({ product }: ProductActionsProps) {
   const [favorited, setFavorited] = useState(product.favorited);
+  const { addToCart, addToFavorite, removeFromFavorite } = useProductActions(
+    product.id
+  );
 
   const onFavoriteButtonClick = async () => {
     try {
@@ -117,7 +115,4 @@ export default function ProductActions({
 
 type ProductActionsProps = {
   product: GetProductOutput;
-  addToCart: (data: AddProductToCardInput) => Promise<void>;
-  addToFavorite: (id: string) => Promise<void>;
-  removeFromFavorite: (id: string) => Promise<void>;
 };

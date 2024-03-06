@@ -16,40 +16,5 @@ export default async function useProduct(productId: string) {
     }
   }
 
-  const addToCart = async (data: AddToCardParams) => {
-    if (!product) return;
-
-    try {
-      await ProductApi.addToCard(data);
-      product.favorited = true;
-    } catch (err) {
-      if (!isAxiosError(err)) {
-        Sentry.captureException(err);
-      }
-    }
-  };
-
-  const addToFavorite = async (id: string) => {
-    try {
-      await ProductApi.addToFavorite(id);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const removeFromFavorite = async (id: string) => {
-    try {
-      await ProductApi.removeFromFavorite(id);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  return { product, addToCart, addToFavorite, removeFromFavorite };
+  return { product };
 }
-
-type AddToCardParams = {
-  productId: string;
-  sizeId: string;
-  colorId: string;
-};

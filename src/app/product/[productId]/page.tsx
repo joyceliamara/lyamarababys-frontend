@@ -21,8 +21,7 @@ export default async function ProductPage({
 }: {
   params: { productId: string };
 }) {
-  const { product, addToCart, addToFavorite, removeFromFavorite } =
-    await useProduct(params.productId);
+  const { product } = await useProduct(params.productId);
 
   if (!product) {
     redirect("/products");
@@ -44,12 +43,7 @@ export default async function ProductPage({
             </div>
           </CarouselProvider>
         </div>
-        <ProductActions
-          product={product}
-          addToCart={addToCart}
-          addToFavorite={addToFavorite}
-          removeFromFavorite={removeFromFavorite}
-        />
+        <ProductActions product={product} />
       </div>
 
       <div className="max-w-4xl mx-auto my-16 max-sm:mx-4 max-lg:mx-12">
