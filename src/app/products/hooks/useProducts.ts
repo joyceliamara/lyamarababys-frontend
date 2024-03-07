@@ -17,7 +17,6 @@ export default async function useProducts() {
       ProductApi.getProducts(),
     ]);
 
-    console.log(all[4].data);
     categories = all[0].data;
     genders = all[1].data;
     sizes = all[2].data;

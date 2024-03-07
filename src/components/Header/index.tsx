@@ -5,18 +5,20 @@ import Image from "next/image";
 import {
   ShoppingBag,
   Heart,
-  ChevronDown,
   Menu,
   X,
   User2,
   Package,
   ChevronRight,
+  UserCircle,
 } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
+import { userStore } from "@/store/user-store";
 
 export default function Header() {
   const [menuOpened, setMenuOpened] = useState(false);
+  const { user } = userStore();
 
   function openMenu() {
     setMenuOpened(true);
@@ -44,20 +46,17 @@ export default function Header() {
           <Image className="inline w-[80%] lg:w-[100%]" src={logo} alt="" />
           <Image className="inline w-4 ml-2" src={anchor} alt="" />
         </div>
-        <nav className="h-fit">
+        <nav className="h-fit flex gap-12">
           {/* desktop */}
-          <ul className="hidden lg:flex gap-12">
+          <ul className="hidden lg:flex gap-4">
             <li className="cursor-pointer">
               <Link href="/">HOME</Link>
             </li>
             <li className="cursor-pointer">
               <Link href="/products">PRODUTOS</Link>
             </li>
-            <li>
-              <Link href="/login" className="flex cursor-pointer">
-                ENTRAR <ChevronDown />
-              </Link>
-            </li>
+          </ul>
+          <ul className="hidden lg:flex gap-4">
             <li className="cursor-pointer">
               <Link href="/cart">
                 <ShoppingBag />
@@ -66,6 +65,11 @@ export default function Header() {
             <li className="cursor-pointer">
               <Link href="/favorites">
                 <Heart />
+              </Link>
+            </li>
+            <li>
+              <Link href="/login" className="cursor-pointer">
+                <UserCircle />
               </Link>
             </li>
           </ul>
@@ -81,16 +85,28 @@ export default function Header() {
         </nav>
       </header>
       {menuOpened && (
-        <div className="bg-black/80 fixed top-0 w-full h-screen">
+        <div className="bg-black/80 fixed top-0 w-full h-screen z-50">
           <div className="w-72 h-full bg-[#F5F5f5] absolute right-0 p-4">
             <div className="flex justify-between mt-2">
               <span>Menu</span>
               <X onClick={closeMenu} className="cursor-pointer" />
             </div>
-            <div className="flex gap-4 p-4 mt-4 bg-white rounded-md text-[#EEB8BC]">
-              <User2 />
-              <span>Faça seu login</span>
-            </div>
+            {user ? (
+              <Link href="/profile">
+                <div className="flex gap-4 p-4 mt-4 bg-white rounded-md text-[#EEB8BC]">
+                  <User2 />
+                  <span>{user.name.split(" ").slice(0, 2).join(" ")}</span>
+                </div>
+              </Link>
+            ) : (
+              <Link href="/login">
+                <div className="flex gap-4 p-4 mt-4 bg-white rounded-md text-[#EEB8BC]">
+                  <User2 />
+                  <span>Faça seu login</span>
+                </div>
+              </Link>
+            )}
+
             <div className="flex mt-6 gap-2">
               <div className="flex flex-col flex-1 bg-white items-center rounded-md py-4 gap-1">
                 <Heart />

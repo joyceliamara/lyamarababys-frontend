@@ -7,7 +7,7 @@ import { NewAddressOutput } from "./output/new-addresss-output";
 
 export class UserApi {
   static async getSelfData() {
-    return request.get<GetSelfDataOutput>("user");
+    return request.get<GetSelfDataOutput>("user/self");
   }
 
   static async getAddresses() {

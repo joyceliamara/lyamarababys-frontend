@@ -1,5 +1,3 @@
-"use client";
-
 /* eslint-disable @next/next/no-img-element */
 import { DM_Serif_Display } from "next/font/google";
 import Button from "@/components/Button";
@@ -14,40 +12,19 @@ import calcDiscount from "@/utils/calc-discount";
 import Link from "next/link";
 import Token from "@/utils/token";
 import { useRouter } from "next/navigation";
+import useCart from "./hooks/useCart";
+import { GetCartOutput } from "@/api/product/outputs/get-cart-output";
+import RemoveProduct from "./components/RemoveProduct";
 
 const dmSerifDisplay = DM_Serif_Display({
   weight: ["400"],
   subsets: ["latin"],
 });
 
-export default function Cart() {
-  const route = useRouter();
+export default async function Cart() {
+  const { cart } = await useCart();
 
-  const [items, setItems] = useState<GetCartItemsDto[]>([]);
-
-  const fetchItems = async () => {
-    try {
-      const token = Token.get();
-
-      if (!token) throw new Error("Token not exists");
-
-      const { data } = await api.get<GetCartItemsDto[]>("product/cart", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      setItems(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  useEffect(() => {
-    fetchItems();
-  }, []);
-
-  const calcFinalPrice = (item: GetCartItemsDto): number => {
+  const calcFinalPrice = (item: GetCartOutput[0]): number => {
     const quantity = item.quantity;
     const price = item.product.price;
     const discount = item.product.discount;
@@ -59,28 +36,6 @@ export default function Cart() {
     return price * quantity;
   };
 
-  const removeProduct = async (id: string) => {
-    try {
-      const token = Token.get();
-
-      if (!token) throw new Error("Token not exists");
-
-      await api.post(
-        `product/cart/remove/${id}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      setItems((prev) => prev.filter((i) => i.product.id !== id));
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   return (
     <div>
       <Header />
@@ -90,7 +45,7 @@ export default function Cart() {
             Sacola de Compras
           </b>
           <Button rounded="md" variant="primary">
-            {items.length} {items.length > 1 ? "items" : "item"}
+            {cart.length} {cart.length > 1 ? "items" : "item"}
           </Button>
         </div>
         <div className="flex max-lg:flex-col gap-4 mt-8">
@@ -103,7 +58,7 @@ export default function Cart() {
               <span className="w-10"></span>
             </div>
 
-            {items.map((item) => (
+            {cart.map((item) => (
               <div
                 key={item.id}
                 className="flex gap-3 bg-white p-4 rounded-md shadow-md"
@@ -141,17 +96,12 @@ export default function Cart() {
                 <div className="w-24">
                   {formatCurrency(calcFinalPrice(item))}
                 </div>
-                <div
-                  className="w-10 cursor-pointer"
-                  onClick={() => removeProduct(item.product.id)}
-                >
-                  <Trash2 color="#7C969D" />
-                </div>
+                <RemoveProduct productId={item.productId} />
               </div>
             ))}
           </div>
           {/* Mobile */}
-          {items.map((item) => (
+          {cart.map((item) => (
             <div
               key={item.id}
               className="flex gap-4 lg:hidden bg-white rounded-md shadow-md p-4"
@@ -192,12 +142,7 @@ export default function Cart() {
                   </div>
                 </div>
               </div>
-              <div
-                className="cursor-pointer"
-                onClick={() => removeProduct(item.product.id)}
-              >
-                <Trash2 color="#7C969D" />
-              </div>
+              <RemoveProduct productId={item.productId} />
             </div>
           ))}
 
@@ -205,11 +150,11 @@ export default function Cart() {
             <span className="text-[#7C7C7C]">Resumo da Compra</span>
             <div className="flex justify-between mt-4">
               <span>
-                {items.length} {items.length > 1 ? "produtos" : "produto"}
+                {cart.length} {cart.length > 1 ? "produtos" : "produto"}
               </span>
               <span>
                 {formatCurrency(
-                  items.reduce((prev, item) => prev + calcFinalPrice(item), 0)
+                  cart.reduce((prev, item) => prev + calcFinalPrice(item), 0)
                 )}
               </span>
             </div>
@@ -218,7 +163,7 @@ export default function Cart() {
               <b>Total</b>
               <b>
                 {formatCurrency(
-                  items.reduce((prev, item) => prev + calcFinalPrice(item), 0)
+                  cart.reduce((prev, item) => prev + calcFinalPrice(item), 0)
                 )}
               </b>
             </div>
@@ -226,7 +171,7 @@ export default function Cart() {
               variant="terciary"
               rounded="md"
               className="w-full my-4"
-              onClick={() => route.push("/delivery")}
+              // onClick={() => route.push("/delivery")}
             >
               Continuar
             </Button>

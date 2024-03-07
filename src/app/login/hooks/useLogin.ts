@@ -1,7 +1,9 @@
 import { AuthApi } from "@/api/auth/auth.api";
 import { LoginInput } from "@/api/auth/input/login-input";
 import request from "@/api/request";
+import User from "@/entities/user";
 import Sentry from "@/services/sentry";
+import { userStore } from "@/store/user-store";
 import Token from "@/utils/token";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -9,6 +11,7 @@ import { useState } from "react";
 export const useLogin = () => {
   const router = useRouter();
   const [error, setError] = useState<string | undefined>();
+  const { setUser } = userStore();
 
   const login = async (input: Input): Promise<string | void> => {
     setError(undefined);
@@ -16,15 +19,14 @@ export const useLogin = () => {
     try {
       const { data } = await AuthApi.login(input);
 
-      if (input.remember) {
-        Token.set(data.token);
-      } else {
-        const expiresInTimestamp = new Date().setDate(new Date().getDate() + 1);
+      setUser(
+        new User({
+          email: data.email,
+          id: data.id,
+          name: data.contact.name,
+        })
+      );
 
-        Token.set(data.token, expiresInTimestamp);
-      }
-
-      request.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
       router.replace("/");
 
       return;

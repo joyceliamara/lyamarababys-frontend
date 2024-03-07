@@ -1,5 +1,6 @@
 import request from "../request";
 import { AddProductToCardInput } from "./inputs/add-product-to-cart";
+import { GetCartOutput } from "./outputs/get-cart-output";
 import { GetFavoritesOutput } from "./outputs/get-favorites-output";
 import { GetProductOutput } from "./outputs/get-product-output";
 
@@ -42,5 +43,13 @@ export default class ProductApi {
 
   static async getProducts() {
     return request.get("product");
+  }
+
+  static async getCart() {
+    return request.get<GetCartOutput>("product/cart");
+  }
+
+  static async removeProductFromCart(productId: string) {
+    return request.post(`product/cart/remove/${productId}`);
   }
 }

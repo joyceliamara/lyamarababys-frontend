@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import anchor from "../../assets/images/login/anchor.png";
 import logo from "../../assets/images/login/logo.png";
