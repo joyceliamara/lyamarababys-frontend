@@ -4,11 +4,7 @@ import Header from "@/components/Header";
 import { Select } from "@/components/Select";
 import { DM_Serif_Display } from "next/font/google";
 import ProductCard from "@/components/ProductCard";
-import api from "@/services/api";
-import { useEffect, useState } from "react";
-import ListFavoritesDto from "@/types/dtos/product/list-favorites-dto";
 import calcDiscount from "@/utils/calc-discount";
-import Token from "@/utils/token";
 import useFavorites from "./hooks/useFavorites";
 
 const dmSerifDisplay = DM_Serif_Display({

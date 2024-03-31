@@ -7,10 +7,18 @@ import ProductCard from "@/components/ProductCard";
 import Filters from "@/types/filters";
 import calcDiscount from "@/utils/calc-discount";
 import api from "@/services/api";
-import { Search } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+} from "@/components/ui/select";
+import { SelectValue } from "@radix-ui/react-select";
 
 export default function ProductList(props: ProductListProps) {
   const router = useRouter();
@@ -129,7 +137,7 @@ export default function ProductList(props: ProductListProps) {
 
   return (
     <>
-      <aside className="flex flex-col gap-6 w-[250px]">
+      <aside className="flex flex-col gap-6 w-[250px] max-lg:hidden">
         <div>
           <b>CATEGORIA</b>
           <ul className="flex flex-col gap-1 mt-2">
@@ -185,6 +193,80 @@ export default function ProductList(props: ProductListProps) {
           />
           <Button>Buscar</Button>
         </form>
+        <div className="flex mt-4 gap-4 lg:hidden">
+          <Select>
+            <SelectTrigger className="w-fit">
+              <SelectValue placeholder="Categoria" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {filters.categories.map((i) => (
+                  <div key={i.id} className="p-2 flex items-center gap-2">
+                    <Checkbox
+                      onClick={() => selectCategory(i.id)}
+                      checked={selectedCategoriesRef.current.has(i.id)}
+                    />
+                    {i.name}
+                  </div>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          <Select>
+            <SelectTrigger className="w-fit">
+              <SelectValue placeholder="Gênero" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {filters.genders.map((i) => (
+                  <div key={i.id} className="p-2 flex items-center gap-2">
+                    <Checkbox
+                      onClick={() => selectGender(i.id)}
+                      checked={selectedGendersRef.current.has(i.id)}
+                    />
+                    {i.name}
+                  </div>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          <Select>
+            <SelectTrigger className="w-fit">
+              <SelectValue placeholder="Tamanho" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {filters.sizes.map((i) => (
+                  <div key={i.id} className="p-2 flex items-center gap-2">
+                    <Checkbox
+                      onClick={() => selectSize(i.id)}
+                      checked={selectedSizesRef.current.has(i.id)}
+                    />
+                    {i.name}
+                  </div>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          <Select>
+            <SelectTrigger className="w-fit">
+              <SelectValue placeholder="Cores" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {filters.colors.map((i) => (
+                  <div key={i.id} className="p-2 flex items-center gap-2">
+                    <Checkbox
+                      onClick={() => selectColor(i.id)}
+                      checked={selectedColorsRef.current.has(i.id)}
+                    />
+                    {i.name}
+                  </div>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
         <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
           {products.map((item, index) => (
             <ProductCard
