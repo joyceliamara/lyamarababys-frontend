@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import anchor from "../../assets/images/login/anchor.png";
 import logo from "../../assets/images/login/logo.png";
@@ -77,8 +78,6 @@ export default function Register() {
       }
 
       const { data } = err.response;
-
-      console.log(data);
 
       if (data.statusCode === 422 && typeof data.message === "string") {
         setErrorMessage("Usuário com email informado já existe");

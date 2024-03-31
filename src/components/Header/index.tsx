@@ -42,10 +42,16 @@ export default function Header() {
   return (
     <>
       <header className="flex justify-between items-center px-6 lg:px-12 py-8  bg-[#edf4f5]">
-        <div className="flex gap-1 lg:gap-2">
-          <Image className="inline w-[80%] lg:w-[100%]" src={logo} alt="" />
-          <Image className="inline w-4 ml-2" src={anchor} alt="" />
-        </div>
+        <Link href="/">
+          <div className="flex gap-1 lg:gap-2">
+            <Image
+              className="hidden w-[80%] lg:w-[100%] lg:inline"
+              src={logo}
+              alt=""
+            />
+            <Image className="inline w-4 ml-2" src={anchor} alt="" />
+          </div>
+        </Link>
         <nav className="h-fit flex gap-12">
           {/* desktop */}
           <ul className="hidden lg:flex gap-4">
@@ -68,9 +74,15 @@ export default function Header() {
               </Link>
             </li>
             <li>
-              <Link href="/login" className="cursor-pointer">
-                <UserCircle />
-              </Link>
+              {user ? (
+                <Link href="/profile">
+                  <UserCircle />
+                </Link>
+              ) : (
+                <Link href="/login">
+                  <UserCircle />
+                </Link>
+              )}
             </li>
           </ul>
           {/* mobile */}

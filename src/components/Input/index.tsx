@@ -23,8 +23,6 @@ export default function Input({
       break;
   }
 
-  console.log(props);
-
   return (
     <div className={`flex flex-col select-none ${className}`}>
       {label && (

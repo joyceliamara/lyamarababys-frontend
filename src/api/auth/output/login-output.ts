@@ -6,4 +6,5 @@ export type LoginOutput = {
 
 type Contact = {
   name: string;
+  surname: string;
 };

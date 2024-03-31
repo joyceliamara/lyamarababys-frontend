@@ -5,30 +5,24 @@ import {
   profileResolver,
 } from "../forms/profileForm";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { UserApi } from "@/api/user/user.api";
 import Sentry from "@/services/sentry";
 import { GetSelfDataOutput } from "@/api/user/output/get-self-data-output";
+import { userStore } from "@/store/user-store";
+import User from "@/entities/user";
 
-export const useRegister = () => {
+export const useRegister = ({ user }: UseRegisterProps) => {
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState<GetSelfDataOutput | undefined>();
   const methods = useForm({
-    defaultValues,
+    defaultValues: {
+      ...defaultValues,
+      name: user?.contact.name,
+      surname: user?.contact.surname,
+    } as ProfileFormData,
     resolver: zodResolver(profileResolver),
   });
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await UserApi.getSelfData();
-
-        setUser(data);
-      } catch (err) {
-        Sentry.captureException(err);
-      }
-    })();
-  }, []);
+  const { setUser } = userStore();
 
   const updateProfile = async (data: ProfileFormData) => {
     if (!user) return;
@@ -42,6 +36,15 @@ export const useRegister = () => {
         cpf: user.contact.cpf,
         phone: user.contact.phone,
       });
+
+      setUser(
+        new User({
+          email: user.email,
+          id: user.id,
+          name: data.name,
+          surname: data.surname,
+        })
+      );
     } catch (err) {
       Sentry.captureException(err);
     } finally {
@@ -50,4 +53,8 @@ export const useRegister = () => {
   };
 
   return { methods, user, updateProfile, loading };
+};
+
+type UseRegisterProps = {
+  user: GetSelfDataOutput;
 };

@@ -9,63 +9,35 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import ProfileLayout from "../components/ProfileLayout";
+import { userStore } from "@/store/user-store";
+import { redirect } from "next/navigation";
+import EditRegister from "../components/EditRegister";
+import { GetSelfDataOutput } from "@/api/user/output/get-self-data-output";
+import { UserApi } from "@/api/user/user.api";
+import EditPassword from "../components/EditPassword";
 
-export default function ProfileRegisterData() {
-  return <ProfileLayout></ProfileLayout>;
+export default async function ProfileRegisterData() {
+  let user: GetSelfDataOutput;
 
-  // const {
-  //   methods,
-  //   user,
-  //   updateProfile,
-  //   loading: loadingRegister,
-  // } = useRegister();
+  try {
+    const { data } = await UserApi.getSelfData();
 
-  // useEffect(() => {
-  //   if (!user) return;
+    user = data;
+  } catch {
+    redirect("/login");
+  }
 
-  //   methods.setValue(ProfileFields.Name, user.contact.name);
-  //   methods.setValue(ProfileFields.Surname, user.contact.surname);
-  // }, [user]);
-
-  // return (
-  //   <ProfileLayout>
-  //     <div className="text-7xl w-40 h-40 bg-slate-200 flex justify-center items-center rounded-full mb-8 text-zinc-800 relative select-none border border-slate-300">
-  //       <div className="absolute right-0 bottom-6 p-2 rounded-full bg-white cursor-pointer">
-  //         <Pencil size={16} className="" />
-  //       </div>
-  //     </div>
-  //     <div className="flex gap-20">
-  //       <Form {...methods}>
-  //         <form
-  //           className="flex gap-4 flex-col w-72"
-  //           onSubmit={methods.handleSubmit(updateProfile, (err) => {
-  //             console.log("Error:", err);
-  //           })}
-  //         >
-  //           <TextField name={ProfileFields.Name} placeholder="Nome" />
-  //           <TextField name={ProfileFields.Surname} placeholder="Sobrenome" />
-  //           <Input value={user?.email} disabled />
-  //           <Button className="self-end mt-4 bg-slate-600 hover:bg-slate-600">
-  //             {loadingRegister ? (
-  //               <>
-  //                 <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-  //                 Salvando
-  //               </>
-  //             ) : (
-  //               "Salvar"
-  //             )}
-  //           </Button>
-  //         </form>
-  //       </Form>
-  //       <form className="flex flex-col gap-4  w-72">
-  //         <Input type="password" placeholder="Senha atual" />
-  //         <Input type="password" placeholder="Nova senha" />
-  //         <Input type="password" placeholder="Repita a senha" />
-  //         <Button className="self-end mt-4 bg-slate-600 hover:bg-slate-600">
-  //           Alterar
-  //         </Button>
-  //       </form>
-  //     </div>
-  //   </ProfileLayout>
-  // );
+  return (
+    <ProfileLayout>
+      <div className="text-7xl w-40 h-40 bg-slate-200 flex justify-center items-center rounded-full mb-8 text-zinc-800 relative select-none border border-slate-300">
+        <div className="absolute right-0 bottom-6 p-2 rounded-full bg-white cursor-pointer">
+          <Pencil size={16} className="" />
+        </div>
+      </div>
+      <div className="flex gap-20">
+        <EditRegister user={user} />
+        <EditPassword />
+      </div>
+    </ProfileLayout>
+  );
 }

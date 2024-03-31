@@ -1,11 +1,13 @@
 export default class User {
   id: string;
   name: string;
+  surname: string;
   email: string;
 
   constructor(data: UserType) {
     this.id = data.id;
     this.name = data.name;
+    this.surname = data.surname;
     this.email = data.email;
   }
 }
@@ -13,5 +15,6 @@ export default class User {
 type UserType = {
   id: string;
   name: string;
+  surname: string;
   email: string;
 };

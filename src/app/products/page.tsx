@@ -8,8 +8,6 @@ import useProducts from "./hooks/useProducts";
 export default async function Products() {
   const { categories, colors, genders, products, sizes } = await useProducts();
 
-  console.log(products);
-
   const filters: Filters = {
     categories: categories.map((i: any) => ({
       ...i,

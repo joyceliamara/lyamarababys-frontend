@@ -16,6 +16,7 @@ export default function UserStoreWarmup({ user }: UserStoreWarmupProps) {
         email: user.email,
         id: user.id,
         name: user.contact.name,
+        surname: user.contact.surname,
       })
     );
   }, []);

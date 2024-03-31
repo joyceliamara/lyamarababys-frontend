@@ -1,11 +1,24 @@
 import Link from "next/link";
-import { ProfileLayout } from "../page";
 import useOrder from "./hooks/useOrder";
 import formatCurrency from "@/utils/format-currency";
-import { OrderStatus } from "@/api/order/output/oders-list-output";
+import {
+  OrderListOutput,
+  OrderStatus,
+} from "@/api/order/output/oders-list-output";
+import OrderApi from "@/api/order/order.api";
+import Sentry from "@/services/sentry";
+import ProfileLayout from "../components/ProfileLayout";
 
 export default async function Orders() {
-  const { orders } = await useOrder();
+  let orders: OrderListOutput = [];
+
+  try {
+    const { data } = await OrderApi.list();
+
+    orders = data;
+  } catch (err) {
+    Sentry.captureException(err);
+  }
 
   const formatStatus = (status: OrderStatus) => {
     switch (status) {
