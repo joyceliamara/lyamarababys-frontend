@@ -4,6 +4,7 @@ import bags from "../../assets/images/categories/bags.png";
 import clothes from "../../assets/images/categories/clothes.png";
 import toys from "../../assets/images/categories/toys.png";
 import Button from "../Button";
+import Link from "next/link";
 
 export default function Categories() {
   return (
@@ -26,9 +27,12 @@ export default function Categories() {
           <p className="mt-2 text-center">Brinquedos</p>
         </div>
       </div>
-      <Button variant="secondary" className="px-2 m-auto mt-10">
+      <Link
+        href="/products"
+        className="bg-[#D6A836] px-6 py-2 block text-white w-fit m-auto mt-4"
+      >
         VER TUDO
-      </Button>
+      </Link>
     </div>
   );
 }

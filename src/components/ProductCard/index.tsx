@@ -16,11 +16,13 @@ export default function ProductCard({
 
   return (
     <div
-      className={`max-w-[261px] mx-auto ${onClick ? "cursor-pointer" : ""}`}
+      className={`flex-1 mx-auto rounded-lg overflow-hidden shadow-sm ${
+        onClick ? "cursor-pointer" : ""
+      }`}
       onClick={onClick}
     >
-      <img src={image} alt="" />
-      <div className="flex flex-col gap-2 mt-4">
+      <img src={image} alt="" className="w-full" />
+      <div className="flex flex-col gap-2 p-4">
         <b className="text-xl max-sm:text-[1rem]">{title}</b>
         <span className="text-[#B0B0B0] text-xl max-sm:text-[0.9rem] max-sm: leading-5">
           {subtitle}

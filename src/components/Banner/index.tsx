@@ -7,11 +7,11 @@ import facebook from "../../assets/icons/facebook.svg";
 import instagram from "../../assets/icons/instagram.svg";
 import whatshapp from "../../assets/icons/whatshapp.svg";
 import tiktok from "../../assets/icons/tiktok.svg";
-import Button from "../Button";
+import Link from "next/link";
 
 export default function Banner() {
   return (
-    <div className="h-72 relative bg-[#FEE4E8]">
+    <div className="h-72 relative bg-primary-foreground">
       <Image src={ellipse1} alt="" className="absolute" />
       <Image src={ellipse2} alt="" className="absolute right-0 bottom-0" />
       <Image src={waves} alt="" className="absolute right-28 bottom-4" />
@@ -22,7 +22,12 @@ export default function Banner() {
         <div>
           <p>Artigos</p>
           <p>para seu bebê</p>
-          <Button variant="primary">PRODUTOS</Button>
+          <Link
+            href="/products"
+            className="bg-primary px-6 py-2 block text-white"
+          >
+            PRODUTOS
+          </Link>
         </div>
         <div>
           <ul className="flex gap-6">

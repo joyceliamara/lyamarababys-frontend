@@ -41,7 +41,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="flex justify-between items-center px-6 lg:px-12 py-8  bg-[#edf4f5]">
+      <header className="flex justify-between items-center px-6 lg:px-12 py-8 bg-gray-50">
         <Link href="/">
           <div className="flex gap-1 lg:gap-2">
             <Image
@@ -88,9 +88,6 @@ export default function Header() {
           {/* mobile */}
           <ul className="flex lg:hidden gap-5">
             <li className="cursor-pointer">
-              <ShoppingBag />
-            </li>
-            <li className="cursor-pointer">
               <Menu onClick={openMenu} />
             </li>
           </ul>
@@ -104,11 +101,12 @@ export default function Header() {
               <X onClick={closeMenu} className="cursor-pointer" />
             </div>
             {user ? (
-              <Link href="/profile">
-                <div className="flex gap-4 p-4 mt-4 bg-white rounded-md text-[#EEB8BC]">
-                  <User2 />
-                  <span>{user.name.split(" ").slice(0, 2).join(" ")}</span>
-                </div>
+              <Link
+                href="/profile"
+                className="flex gap-4 p-4 mt-4 bg-white rounded-md text-[#EEB8BC]"
+              >
+                <User2 />
+                <span>{user.name.split(" ").slice(0, 2).join(" ")}</span>
               </Link>
             ) : (
               <Link href="/login">
@@ -120,31 +118,34 @@ export default function Header() {
             )}
 
             <div className="flex mt-6 gap-2">
-              <div className="flex flex-col flex-1 bg-white items-center rounded-md py-4 gap-1">
+              <Link
+                href="/favorites"
+                className="flex flex-col flex-1 bg-white items-center rounded-md py-4 gap-1"
+              >
                 <Heart />
                 Favoritos
-              </div>
-              <div className="flex flex-col flex-1 bg-white items-center rounded-md py-4 gap-1">
+              </Link>
+              <Link
+                href="/profile/orders"
+                className="flex flex-col flex-1 bg-white items-center rounded-md py-4 gap-1"
+              >
                 <Package />
                 Pedidos
-              </div>
+              </Link>
             </div>
             <ul className="flex flex-col mt-6 gap-2 text-[#303030]">
-              <li className="bg-white rounded-md py-2 px-3 cursor-pointer">
-                Home
-              </li>
-              <li className="flex justify-between bg-white rounded-md py-2 px-3 cursor-pointer">
-                Roupas <ChevronRight color="#7C969D" />
-              </li>
-              <li className="flex justify-between bg-white rounded-md py-2 px-3 cursor-pointer">
-                Bolsas <ChevronRight color="#7C969D" />
-              </li>
-              <li className="flex justify-between bg-white rounded-md py-2 px-3 cursor-pointer">
-                Brinquedos <ChevronRight color="#7C969D" />
-              </li>
-              <li className="flex justify-between bg-white rounded-md py-2 px-3 cursor-pointer">
-                Acessórios <ChevronRight color="#7C969D" />
-              </li>
+              <Link
+                href="/"
+                className="bg-white rounded-md py-2 px-3 cursor-pointer"
+              >
+                Início
+              </Link>
+              <Link
+                href="/"
+                className="bg-white rounded-md py-2 px-3 cursor-pointer"
+              >
+                Produtos
+              </Link>
             </ul>
           </div>
         </div>

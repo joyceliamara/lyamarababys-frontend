@@ -8,8 +8,9 @@ import Filters from "@/types/filters";
 import calcDiscount from "@/utils/calc-discount";
 import api from "@/services/api";
 import { Search } from "lucide-react";
-import Input from "@/components/Input";
-import Checkbox from "@/components/Checkbox";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default function ProductList(props: ProductListProps) {
   const router = useRouter();
@@ -128,13 +129,13 @@ export default function ProductList(props: ProductListProps) {
 
   return (
     <>
-      <aside className="flex flex-col gap-7 w-[250px]">
+      <aside className="flex flex-col gap-6 w-[250px]">
         <div>
           <b>CATEGORIA</b>
           <ul className="flex flex-col gap-1 mt-2">
             {filters.categories.map((i) => (
               <li className="flex gap-2 items-center" key={i.id}>
-                <Checkbox onTap={() => selectCategory(i.id)} />
+                <Checkbox onClick={() => selectCategory(i.id)} />
                 {i.name}
               </li>
             ))}
@@ -145,7 +146,7 @@ export default function ProductList(props: ProductListProps) {
           <ul className="flex flex-col gap-1 mt-2">
             {filters.genders.map((i) => (
               <li className="flex gap-2 items-center" key={i.id}>
-                <Checkbox onTap={() => selectGender(i.id)} />
+                <Checkbox onClick={() => selectGender(i.id)} />
                 {i.name}
               </li>
             ))}
@@ -156,7 +157,7 @@ export default function ProductList(props: ProductListProps) {
           <ul className="flex flex-col gap-1 mt-2">
             {filters.sizes.map((i) => (
               <li className="flex gap-2 items-center" key={i.id}>
-                <Checkbox onTap={() => selectSize(i.id)} />
+                <Checkbox onClick={() => selectSize(i.id)} />
                 {i.name}
               </li>
             ))}
@@ -167,11 +168,7 @@ export default function ProductList(props: ProductListProps) {
           <ul>
             {filters.colors.map((i) => (
               <li className="flex gap-2 items-center" key={i.id}>
-                <Checkbox onTap={() => selectColor(i.id)} />
-                <div
-                  className="w-4 h-4 rounded-full"
-                  style={{ background: i.code }}
-                />
+                <Checkbox onClick={() => selectColor(i.id)} />
                 {i.name}
               </li>
             ))}
@@ -180,16 +177,15 @@ export default function ProductList(props: ProductListProps) {
       </aside>
       <main className="flex-1">
         <form className="flex gap-2 items-center" onSubmit={handleSubmit}>
-          <Search />
-          {/* todo: ajustar o input */}
           <Input
-            placeholder="Pesquisar"
+            placeholder="Busque por algum produto"
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="flex-1"
           />
+          <Button>Buscar</Button>
         </form>
-        <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 mt-4">
+        <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
           {products.map((item, index) => (
             <ProductCard
               key={index}
