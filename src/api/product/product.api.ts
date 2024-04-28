@@ -26,19 +26,19 @@ export default class ProductApi {
   }
 
   static async getCategories() {
-    return request.get("product/category");
+    return request.get("category");
   }
 
   static async getGender() {
-    return request.get("product/gender");
+    return request.get("gender");
   }
 
   static async getSize() {
-    return request.get("product/size");
+    return request.get("size");
   }
 
   static async getColor() {
-    return request.get("product/color");
+    return request.get("color");
   }
 
   static async getProducts() {

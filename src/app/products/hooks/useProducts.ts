@@ -21,7 +21,7 @@ export default async function useProducts() {
     genders = all[1].data;
     sizes = all[2].data;
     colors = all[3].data;
-    products = all[4].data.items;
+    products = all[4].data;
   } catch (err) {
     console.log(err);
   }

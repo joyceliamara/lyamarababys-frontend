@@ -9,28 +9,28 @@ import { useState } from "react";
 import useProductActions from "../hooks/useProductActions";
 
 export default function ProductActions({ product }: ProductActionsProps) {
-  const [favorited, setFavorited] = useState(product.favorited);
+  // const [favorited, setFavorited] = useState(product.favorited);
   const { addToCart, addToFavorite, removeFromFavorite } = useProductActions(
     product.id
   );
 
-  const onFavoriteButtonClick = async () => {
-    try {
-      if (favorited) {
-        await removeFromFavorite(product.id);
-      } else {
-        await addToFavorite(product.id);
-      }
+  // const onFavoriteButtonClick = async () => {
+  //   try {
+  //     if (favorited) {
+  //       await removeFromFavorite(product.id);
+  //     } else {
+  //       await addToFavorite(product.id);
+  //     }
 
-      setFavorited((prev) => !prev);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  //     setFavorited((prev: any) => !prev);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   return (
     <div className="w-80 max-lg:w-full flex flex-col justify-between">
-      <b className="text-3xl font-medium">{product.subtitle}</b>
+      <b className="text-3xl font-medium">{product.name}</b>
 
       <div className="flex flex-col">
         {!!product.discount ? (
@@ -65,7 +65,7 @@ export default function ProductActions({ product }: ProductActionsProps) {
           no pix ou boleto
         </span>
       </div>
-      <div>
+      {/* <div>
         <span>Cor: {product.colors[0].name}</span>
         <div className="flex gap-2">
           {product.colors &&
@@ -79,10 +79,10 @@ export default function ProductActions({ product }: ProductActionsProps) {
               />
             ))}
         </div>
-      </div>
+      </div> */}
 
       <div>
-        <Button
+        {/* <Button
           variant={product.quantities.length ? "terciary" : "default"}
           rounded="lg"
           className="mt-4 w-full py-4"
@@ -98,8 +98,8 @@ export default function ProductActions({ product }: ProductActionsProps) {
           }
         >
           {product.quantities.length ? "Comprar" : "Produto indisponível"}
-        </Button>
-        <Button
+        </Button> */}
+        {/* <Button
           variant="default"
           rounded="lg"
           className="mt-4 w-full gap-2 py-3"
@@ -107,7 +107,7 @@ export default function ProductActions({ product }: ProductActionsProps) {
         >
           <Heart size={18} fill="black" />{" "}
           {favorited ? "Remover dos favoritos" : "Adicionar aos favoritos"}
-        </Button>
+        </Button> */}
       </div>
     </div>
   );

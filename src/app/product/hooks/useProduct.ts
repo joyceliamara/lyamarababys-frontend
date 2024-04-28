@@ -9,6 +9,8 @@ export default async function useProduct(productId: string) {
   try {
     const { data } = await ProductApi.get(productId);
 
+    console.log(data);
+
     product = data;
   } catch (err) {
     if (!isAxiosError(err)) {

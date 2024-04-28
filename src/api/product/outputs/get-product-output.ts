@@ -2,16 +2,16 @@ export type GetProductOutput = {
   id: string;
   sku: string;
   name: string;
-  subtitle: string;
+  description: string;
   composition: string;
   price: number;
   discount: number;
-  createdAt: string;
-  updatedAt: string;
-  colors: Color[];
-  images: Image[];
-  quantities: [];
-  favorited: boolean;
+  path: string;
+  images: {
+    id: string;
+    url: string;
+    main: string;
+  }[];
 };
 
 type Color = {

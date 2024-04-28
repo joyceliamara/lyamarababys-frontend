@@ -271,16 +271,19 @@ export default function ProductList(props: ProductListProps) {
           {products.map((item, index) => (
             <ProductCard
               key={index}
-              image={item.images.find((i) => i.main)?.url ?? ""}
+              image={
+                item.images?.find((i) => i.main)?.url ??
+                "https://lyamarababys.s3.sa-east-1.amazonaws.com/product-images/conj02.png"
+              }
               title={item.name}
-              subtitle={item.subtitle}
+              subtitle={item.description}
               price={item.price}
               priceWithDiscount={
                 item.discount
                   ? calcDiscount(item.discount, item.price)
                   : undefined
               }
-              onClick={() => router.push(`/product/${item.id}`)}
+              onClick={() => router.push(`/product/${item.path}`)}
             />
           ))}
           {hasNextPage && !loading && (

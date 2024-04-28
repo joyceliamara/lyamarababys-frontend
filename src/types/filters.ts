@@ -32,9 +32,11 @@ export default interface Filters {
     id: string;
     sku: string;
     name: string;
-    subtitle: string;
+    description: string;
+    composition: string;
     price: number;
     discount: number;
+    path: string;
     images: {
       id: string;
       url: string;

@@ -2,7 +2,6 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Filters from "@/types/filters";
 import ProductList from "./ProductList";
-import request from "@/api/request";
 import useProducts from "./hooks/useProducts";
 
 export default async function Products() {
