@@ -11,6 +11,8 @@ export default function UserStoreWarmup({ user }: UserStoreWarmupProps) {
   useEffect(() => {
     if (!user) return;
 
+    console.log(user);
+
     setUser(
       new User({
         email: user.email,

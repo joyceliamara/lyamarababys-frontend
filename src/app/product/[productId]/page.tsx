@@ -32,7 +32,7 @@ export default async function ProductPage({
       <Header />
       <div className="flex gap-6 max-w-5xl mx-auto my-8 max-lg:flex-col max-lg:max-w-xl max-sm:mx-4">
         <div className="flex flex-1  gap-6">
-          {/* <CarouselProvider>
+          <CarouselProvider>
             <div className="w-32 max-lg:w-24 max-sm:w-12">
               <Carousel galery={product.images.map((i) => i.url)} />
             </div>
@@ -41,7 +41,7 @@ export default async function ProductPage({
                 url={product.images.find((i) => i.main)?.url ?? ""}
               />
             </div>
-          </CarouselProvider> */}
+          </CarouselProvider>
         </div>
         <ProductActions product={product} />
       </div>
@@ -59,7 +59,7 @@ export default async function ProductPage({
         <p className="mt-3">
           <b className="text-[#7C969D]">Cor</b>
         </p>
-        {/* <p>{listColors(product.colors.map((i) => i.name) ?? [])}</p> */}
+        <p>{listColors(product.quantities?.map((i) => i.color.name) ?? [])}</p>
       </div>
       <div className="mb-8 mx-4">
         <h1 className="text-center font-bold text-3xl mb-8">Do mesmo estilo</h1>
