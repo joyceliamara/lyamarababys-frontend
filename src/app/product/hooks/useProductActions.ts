@@ -1,5 +1,6 @@
 import { GetProductOutput } from "@/api/product/outputs/get-product-output";
 import ProductApi from "@/api/product/product.api";
+import { toast } from "@/components/ui/use-toast";
 import Sentry from "@/services/sentry";
 import { isAxiosError } from "axios";
 
@@ -8,7 +9,10 @@ export default function useProductActions(productId: string) {
     if (!productId) return;
 
     try {
-      await ProductApi.addToCard(data);
+      await ProductApi.addToCard({ ...data, quantity: 1 });
+      toast({
+        title: "Produto adicionado ao carrinho",
+      });
     } catch (err) {
       if (!isAxiosError(err)) {
         Sentry.captureException(err);

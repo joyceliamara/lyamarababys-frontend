@@ -6,6 +6,7 @@ import User from "@/entities/user";
 import { UserApi } from "@/api/user/user.api";
 import UserStoreWarmup from "@/components/UserStoreWarmup";
 import { ZodCatch } from "zod";
+import { Toaster } from "@/components/ui/toaster";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -31,6 +32,7 @@ export default async function RootLayout({
     <html lang="pt-br">
       <body className={montserrat.className}>{children}</body>
       <UserStoreWarmup user={user} />
+      <Toaster />
     </html>
   );
 }
