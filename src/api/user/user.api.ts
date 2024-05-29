@@ -1,11 +1,16 @@
 import request from "../request";
 import { NewAddressInput } from "./input/new-address-input";
+import { RegisterInput } from "./input/register-input";
 import { UpdateContactInput } from "./input/update-contact-input";
 import { AddressOutput } from "./output/address-output";
 import { GetSelfDataOutput } from "./output/get-self-data-output";
 import { NewAddressOutput } from "./output/new-addresss-output";
 
 export class UserApi {
+  static async register(input: RegisterInput) {
+    return request.post<void>("user", input);
+  }
+
   static async getSelfData() {
     return request.get<GetSelfDataOutput>("user/self");
   }
