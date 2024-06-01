@@ -1,18 +1,27 @@
+"use client";
+
 import { GetFavoritesOutput } from "@/api/product/outputs/get-favorites-output";
 import ProductApi from "@/api/product/product.api";
 import Sentry from "@/services/sentry";
+import { useEffect, useState } from "react";
 
-export default async function useFavorites() {
-  let favorites: GetFavoritesOutput = [];
+export default function useFavorites() {
+  let [favorites, setFavorites] = useState<GetFavoritesOutput>([]);
 
-  try {
-    const { data } = await ProductApi.getFavorited();
+  const fetchData = async () => {
+    try {
+      const { data } = await ProductApi.getFavorited();
 
-    favorites = data;
-  } catch (err) {
-    console.log(err);
-    Sentry.captureException(err);
-  }
+      setFavorites(data);
+    } catch (err) {
+      console.log(err);
+      Sentry.captureException(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return { favorites };
 }

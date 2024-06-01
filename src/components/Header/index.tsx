@@ -9,7 +9,6 @@ import {
   X,
   User2,
   Package,
-  ChevronRight,
   UserCircle,
 } from "lucide-react";
 import { useState } from "react";

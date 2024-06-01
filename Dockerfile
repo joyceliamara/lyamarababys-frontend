@@ -23,3 +23,6 @@ CMD ["yarn", "start"]
 
 # docker build -t lyamarababys-frontend:latest .
 # docker run -p 3000:3000 lyamarababys-frontend:latest
+# push
+# docker tag lyamarababys-frontend:latest 40069003840/lyamarababys-frontend:latest
+# docker push 40069003840/lyamarababys-frontend:latest

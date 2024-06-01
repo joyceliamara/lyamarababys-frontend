@@ -2,6 +2,7 @@
 
 /* eslint-disable @next/next/no-img-element */
 import formatCurrency from "@/utils/format-currency";
+import { useRouter } from "next/navigation";
 import { useState, MouseEvent } from "react";
 
 export default function ProductCard({
@@ -11,15 +12,27 @@ export default function ProductCard({
   price,
   priceWithDiscount,
   onClick,
+  redirect,
 }: ProductCardProps) {
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+  const handleClick = async (
+    event: MouseEvent<HTMLDivElement, globalThis.MouseEvent>
+  ) => {
+    onClick?.(event);
+
+    if (!redirect) return;
+
+    router.push(redirect);
+  };
 
   return (
     <div
       className={`flex-1 mx-auto rounded-lg overflow-hidden shadow-sm ${
-        onClick ? "cursor-pointer" : ""
+        onClick || redirect ? "cursor-pointer" : ""
       }`}
-      onClick={onClick}
+      onClick={handleClick}
     >
       <img src={image} alt="" className="w-full" />
       <div className="flex flex-col gap-2 p-4">
@@ -53,4 +66,5 @@ interface ProductCardProps {
   price: number;
   priceWithDiscount?: number;
   onClick?: (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => void;
+  redirect?: string;
 }
