@@ -31,6 +31,10 @@ export class UserApi {
     return request.delete(`user/address/${addressId}`);
   }
 
+  static async setMainAddress(addressId: string) {
+    return request.patch<void>(`user/address/${addressId}/set-main`);
+  }
+
   static async updateProfile(data: UpdateContactInput) {
     return request.put<void>("user/contact", data);
   }

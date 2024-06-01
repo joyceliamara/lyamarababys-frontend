@@ -12,16 +12,15 @@ const initialFormData: Address = {
   state: "",
 };
 
-export const useAddressModal = () => {
+export const useAddressModal = (props: AddressProps) => {
+  const [addresses, setAddresses] = useState<AddressOutput>(
+    props.addresses ?? []
+  );
   const [target, setTarget] = useState<AddressOutput[0] | undefined>();
   const [formData, setFormData] = useState<Address>(initialFormData);
   const [error, setError] = useState<string | undefined>();
   const [modalActive, setModalActive] = useState(false);
   const [mode, setMode] = useState<ModalMode | undefined>();
-
-  useEffect(() => {
-    console.log({ formData });
-  }, [formData]);
 
   const editAddress = (address: AddressOutput[0]) => {
     setTarget(address);
@@ -73,11 +72,19 @@ export const useAddressModal = () => {
     }
 
     try {
-      mode === ModalMode.Create
-        ? await UserApi.addAddress(validation.data)
-        : await UserApi.updateAddress(target?.id as string, validation.data);
+      const result =
+        mode === ModalMode.Create
+          ? await UserApi.addAddress(validation.data)
+          : await UserApi.updateAddress(target?.id as string, validation.data);
 
       onClose();
+      setAddresses((prev) =>
+        mode === ModalMode.Create
+          ? [...prev, result.data]
+          : prev.map((address) =>
+              address.id === result.data.id ? result.data : address
+            )
+      );
 
       if (callback) callback();
     } catch (err) {
@@ -89,13 +96,36 @@ export const useAddressModal = () => {
     try {
       await UserApi.deleteAddress(addressId);
 
+      setAddresses((prev) =>
+        prev.filter((address) => address.id !== addressId)
+      );
+
       if (callback) callback();
     } catch (err) {
       console.log(err);
     }
   };
 
+  const setMainAddress = async (addressId: string) => {
+    try {
+      await UserApi.setMainAddress(addressId);
+
+      setAddresses((prev) =>
+        prev
+          .map((address) =>
+            address.id === addressId
+              ? { ...address, main: true }
+              : { ...address, main: false }
+          )
+          .sort((a, b) => (a.main ? -1 : b.main ? 1 : 0))
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return {
+    addresses,
     modalActive,
     editAddress,
     newAddress,
@@ -106,7 +136,12 @@ export const useAddressModal = () => {
     onChangeFormData,
     onSubmit,
     deleteAddress,
+    setMainAddress,
   };
+};
+
+type AddressProps = {
+  addresses: AddressOutput;
 };
 
 export enum ModalMode {
