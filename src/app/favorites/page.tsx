@@ -1,3 +1,5 @@
+"use client";
+
 import Button from "@/components/Button";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
@@ -12,8 +14,8 @@ const dmSerifDisplay = DM_Serif_Display({
   subsets: ["latin"],
 });
 
-export default async function Favorites() {
-  const { favorites } = await useFavorites();
+export default function Favorites() {
+  const { favorites } = useFavorites();
 
   return (
     <div>
@@ -46,16 +48,19 @@ export default async function Favorites() {
         </div>
       </div>
       <div className="grid grid-cols-4 max-lg:grid-cols-3 max-md:grid-cols-2  gap-16 m-8 ">
-        {favorites.map((item, index) => (
-          <ProductCard
-            key={index}
-            image={item.images.find((i) => i.main)?.url as string}
-            title={item.name}
-            subtitle={item.subtitle}
-            price={item.price}
-            priceWithDiscount={calcDiscount(item.discount, item.price)}
-          />
-        ))}
+        {favorites.map((item, index) => {
+          return (
+            <ProductCard
+              key={index}
+              image={item.images?.find((i) => i.main)?.url as string}
+              title={item.name}
+              subtitle={item.description}
+              price={item.price}
+              priceWithDiscount={calcDiscount(item.discount, item.price)}
+              redirect={`/product/${item.path}`}
+            />
+          );
+        })}
       </div>
       <Footer />
     </div>

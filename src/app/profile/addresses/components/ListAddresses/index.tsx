@@ -9,11 +9,12 @@ import { useAddress } from "../../hooks/useAddress";
 import { ModalMode, useAddressModal } from "../../hooks/useAddressModal";
 import { AddressOutput } from "@/api/user/output/address-output";
 
-export default function ListAddresses({ addresses }: ListAddressesProps) {
+export default function ListAddresses(props: ListAddressesProps) {
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [toDeleteId, setToDeleteId] = useState<string | undefined>();
   const { fetchAddress } = useAddress();
   const {
+    addresses,
     modalActive,
     editAddress,
     newAddress,
@@ -21,8 +22,11 @@ export default function ListAddresses({ addresses }: ListAddressesProps) {
     onChangeFormData,
     onSubmit,
     deleteAddress,
+    setMainAddress,
     ...addressModal
-  } = useAddressModal();
+  } = useAddressModal({
+    addresses: props.addresses,
+  });
 
   const onDelete = () => {
     setToDeleteId(undefined);
@@ -54,8 +58,11 @@ export default function ListAddresses({ addresses }: ListAddressesProps) {
               <span>
                 {i.city} - {i.state}, {i.cep}
               </span>
-              {index !== 0 && (
-                <span className="text-blue-500 cursor-pointer mt-2 w-fit">
+              {!i.main && (
+                <span
+                  className="text-blue-500 cursor-pointer mt-2 w-fit"
+                  onClick={() => setMainAddress(i.id)}
+                >
                   Definir como principal
                 </span>
               )}
@@ -66,14 +73,16 @@ export default function ListAddresses({ addresses }: ListAddressesProps) {
                 className="cursor-pointer text-zinc-700"
                 onClick={() => editAddress(i)}
               />
-              <X
-                size={18}
-                className="cursor-pointer text-red-700"
-                onClick={() => {
-                  setDeleteDialog(true);
-                  setToDeleteId(i.id);
-                }}
-              />
+              {!i.main && (
+                <X
+                  size={18}
+                  className="cursor-pointer text-red-700"
+                  onClick={() => {
+                    setDeleteDialog(true);
+                    setToDeleteId(i.id);
+                  }}
+                />
+              )}
             </div>
           </li>
         ))}
