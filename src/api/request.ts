@@ -6,6 +6,8 @@ const request = axios.create({
   withCredentials: true,
 });
 
+request.defaults.adapter = require("axios/unsafe/adapters/http.js");
+
 request.interceptors.request.use((config) => {
   if (isServer) {
     const { cookies } = require("next/headers");
