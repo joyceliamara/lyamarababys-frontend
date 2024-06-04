@@ -1,14 +1,11 @@
 import axios from "axios";
 import { redirect } from "next/navigation";
 // @ts-ignore
-import http from "axios/unsafe/adapters/http.js";
 
 const request = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
   withCredentials: true,
 });
-
-request.defaults.adapter = http;
 
 request.interceptors.request.use((config) => {
   if (isServer) {
